@@ -2,20 +2,25 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import { motion } from "motion/react";
+import { CategoryIcon, CategoryIconKey } from "./category-icons";
 
 export type SidebarCategory = {
   label: string;
   labelEn: string;
-  icon: string;
-  thumb: string; // تصویر اولین غذای آن دسته؛ اگر نبود ایموجی نمایش داده می‌شود
+  icon: CategoryIconKey;
 };
 
 // نوار کناری ثابت (سمت چپ صفحه) با دایره‌ی تصویر هر دسته. چون در layout قرار دارد
 // هنگام جابه‌جایی بین دسته‌ها دوباره ساخته نمی‌شود و جای اسکرولش حفظ می‌شود.
-export function CategorySidebar({ sectionKey, categories }: { sectionKey: string; categories: SidebarCategory[] }) {
+export function CategorySidebar({
+  sectionKey,
+  categories,
+}: {
+  sectionKey: string;
+  categories: SidebarCategory[];
+}) {
   const params = useParams<{ category?: string }>();
   const active = params.category ? decodeURIComponent(params.category) : "";
   const activeRef = useRef<HTMLAnchorElement | null>(null);
@@ -53,14 +58,17 @@ export function CategorySidebar({ sectionKey, categories }: { sectionKey: string
                   transition={{ type: "spring", stiffness: 420, damping: 32 }}
                   className="relative flex h-[50px] w-[50px] items-center justify-center overflow-hidden rounded-full bg-black text-[22px]"
                 >
-                  {category.thumb ? (
-                    <Image src={category.thumb} alt="" fill sizes="50px" className="object-cover" />
-                  ) : (
-                    category.icon
-                  )}
+                  <CategoryIcon
+                    icon={category.icon}
+                    className="h-[26px] w-[26px] text-gold-400"
+                  />
                 </motion.span>
-                <span className="mt-2 text-[15px] leading-6 text-white">{category.label}</span>
-                <span className="min-h-5 text-[13px] leading-5 text-white/80">{category.labelEn}</span>
+                <span className="mt-2 text-[15px] leading-6 text-white">
+                  {category.label}
+                </span>
+                <span className="min-h-5 text-[13px] leading-5 text-white/80">
+                  {category.labelEn}
+                </span>
               </Link>
             </li>
           );

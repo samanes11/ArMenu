@@ -41,8 +41,8 @@ export function DishForm() {
             <optgroup key={section.key} label={section.label}>
               {section.categories.map((category) => (
                 <option key={category.label} value={category.label}>
-                  {category.icon} {category.label}
-                </option>
+  {category.label}
+</option>
               ))}
             </optgroup>
           ))}

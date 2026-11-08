@@ -411,3 +411,33 @@ a:active > .menu-arch {
   font-size: 0.8125rem;
   font-weight: 500;
 }
+
+/* ============================================================
+   اسکلتون لودینگ — شیمر نرم با رنگ‌های همین تم
+   ============================================================ */
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.65rem;
+  background-color: color-mix(in srgb, var(--menu-line) 55%, black 10%);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--gold-400) 18%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background-image: none;
+  }
+}

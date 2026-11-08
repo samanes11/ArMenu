@@ -1,14 +1,12 @@
-// ساختار ثابت منو: ۵ بخش (صبحانه، ناهار، شام، پیش غذا، کافه) که روی صفحه‌ی اول به‌شکل
-// طاقی نمایش داده می‌شوند؛ هر بخش چند دسته‌بندی دارد که در نوار کناری صفحه‌ی منو می‌آید.
-// برچسب (label) هر دسته‌بندی در کل منو یکتاست، چون در فیلد category هر غذا ذخیره می‌شود.
-// این لیست هم در فرم افزودن غذا (داشبورد) و هم در صفحات عمومی منو استفاده می‌شود.
+
+import type { CategoryIconKey } from "@/components/menu/category-icons";
 
 export type SectionKey = "breakfast" | "lunch" | "dinner" | "appetizer" | "cafe";
 
 export type MenuCategory = {
   label: string;
   labelEn: string;
-  icon: string; // ایموجی جایگزین، وقتی هنوز هیچ غذایی با تصویر در آن دسته نیست
+  icon: CategoryIconKey;
 };
 
 export type MenuSectionDef = {
@@ -23,51 +21,51 @@ export const MENU_SECTIONS: MenuSectionDef[] = [
     key: "breakfast",
     label: "صبحانه",
     categories: [
-      { label: "املت و تخم‌مرغ", labelEn: "Eggs", icon: "🍳" },
-      { label: "صبحانه کامل", labelEn: "Breakfast", icon: "🥞" },
-      { label: "پنکیک و وافل", labelEn: "Pancake", icon: "🧇" },
+      { label: "املت و تخم‌مرغ", labelEn: "Eggs", icon: "eggs" },
+      { label: "صبحانه کامل", labelEn: "Breakfast", icon: "fullBreakfast" },
+      { label: "پنکیک و وافل", labelEn: "Pancake", icon: "pancake" },
     ],
   },
   {
     key: "lunch",
     label: "ناهار",
     categories: [
-      { label: "برگر", labelEn: "Burger", icon: "🍔" },
-      { label: "ساندویچ", labelEn: "Sandwich", icon: "🥪" },
-      { label: "غذای اصلی", labelEn: "Main course", icon: "🍝" },
+      { label: "برگر", labelEn: "Burger", icon: "burger" },
+      { label: "ساندویچ", labelEn: "Sandwich", icon: "sandwich" },
+      { label: "غذای اصلی", labelEn: "Main course", icon: "mainCourse" },
     ],
   },
   {
     key: "dinner",
     label: "شام",
     categories: [
-      { label: "استیک", labelEn: "Steak", icon: "🥩" },
-      { label: "پیتزا", labelEn: "pizza", icon: "🍕" },
-      { label: "پاستا", labelEn: "Pasta", icon: "🍝" },
-      { label: "سوخاری", labelEn: "Fried", icon: "🍗" },
-      { label: "خوراک", labelEn: "Grill", icon: "🍲" },
+      { label: "استیک", labelEn: "Steak", icon: "steak" },
+      { label: "پیتزا", labelEn: "pizza", icon: "pizza" },
+      { label: "پاستا", labelEn: "Pasta", icon: "pasta" },
+      { label: "سوخاری", labelEn: "Fried", icon: "fried" },
+      { label: "خوراک", labelEn: "Grill", icon: "grill" },
     ],
   },
   {
     key: "appetizer",
     label: "پیش غذا",
     categories: [
-      { label: "پیش‌غذا", labelEn: "Appetizer", icon: "🍟" },
-      { label: "سالاد", labelEn: "Salad", icon: "🥗" },
-      { label: "سوپ", labelEn: "Soup", icon: "🍜" },
+      { label: "پیش‌غذا", labelEn: "Appetizer", icon: "appetizer" },
+      { label: "سالاد", labelEn: "Salad", icon: "salad" },
+      { label: "سوپ", labelEn: "Soup", icon: "soup" },
     ],
   },
   {
     key: "cafe",
     label: "کافه",
     categories: [
-      { label: "قهوه گرم", labelEn: "Hot coffee", icon: "☕" },
-      { label: "قهوه سرد", labelEn: "Iced coffee", icon: "🧊" },
-      { label: "چای و دمنوش", labelEn: "Tea", icon: "🍵" },
-      { label: "نوشیدنی سرد", labelEn: "Cold drinks", icon: "🥤" },
-      { label: "شیک و اسموتی", labelEn: "Shake", icon: "🍓" },
-      { label: "شیرینی و کیک", labelEn: "Cake", icon: "🧁" },
-      { label: "دسر", labelEn: "Dessert", icon: "🍰" },
+      { label: "قهوه گرم", labelEn: "Hot coffee", icon: "hotCoffee" },
+      { label: "قهوه سرد", labelEn: "Iced coffee", icon: "icedCoffee" },
+      { label: "چای و دمنوش", labelEn: "Tea", icon: "tea" },
+      { label: "نوشیدنی سرد", labelEn: "Cold drinks", icon: "coldDrinks" },
+      { label: "شیک و اسموتی", labelEn: "Shake", icon: "shake" },
+      { label: "شیرینی و کیک", labelEn: "Cake", icon: "cake" },
+      { label: "دسر", labelEn: "Dessert", icon: "dessert" },
     ],
   },
 ];
