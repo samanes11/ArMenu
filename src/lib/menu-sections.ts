@@ -15,7 +15,6 @@ export type MenuSectionDef = {
   categories: MenuCategory[];
 };
 
-// ترتیب منطقی: صبحانه ← کافه. در صفحه‌ی اول (چون راست‌به‌چپ است) از چپ به راست چیده می‌شود.
 export const MENU_SECTIONS: MenuSectionDef[] = [
   {
     key: "breakfast",
@@ -78,7 +77,6 @@ export function getCategory(sectionKey: string, categoryLabel: string): MenuCate
   return getSection(sectionKey)?.categories.find((c) => c.label === categoryLabel);
 }
 
-// پیدا کردن بخش و دسته‌ی یک غذا از روی برچسب دسته‌اش (برای دکمه‌ی بازگشت در صفحه‌ی جزئیات غذا)
 export function findByCategory(categoryLabel: string) {
   for (const section of MENU_SECTIONS) {
     const category = section.categories.find((c) => c.label === categoryLabel);

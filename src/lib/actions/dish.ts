@@ -14,7 +14,10 @@ async function requireRestaurant() {
   return session!.restaurantId as string;
 }
 
-export async function createDishAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function createDishAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const restaurantId = await requireRestaurant();
 
   const name = String(formData.get("name") || "").trim();
@@ -29,9 +32,14 @@ export async function createDishAction(_prev: ActionState, formData: FormData): 
   const glb = formData.get("modelGlb") as File | null;
   const usdz = formData.get("modelUsdz") as File | null;
 
-  const thumbnailUrl = thumbnail && thumbnail.size > 0 ? await saveUploadedFile(thumbnail, restaurantId) : "";
-  const modelUrlGlb = glb && glb.size > 0 ? await saveUploadedFile(glb, restaurantId) : "";
-  const modelUrlUsdz = usdz && usdz.size > 0 ? await saveUploadedFile(usdz, restaurantId) : "";
+  const thumbnailUrl =
+    thumbnail && thumbnail.size > 0
+      ? await saveUploadedFile(thumbnail, restaurantId)
+      : "";
+  const modelUrlGlb =
+    glb && glb.size > 0 ? await saveUploadedFile(glb, restaurantId) : "";
+  const modelUrlUsdz =
+    usdz && usdz.size > 0 ? await saveUploadedFile(usdz, restaurantId) : "";
 
   await Dish.create({
     restaurantId,
@@ -44,6 +52,52 @@ export async function createDishAction(_prev: ActionState, formData: FormData): 
     modelUrlGlb,
     modelUrlUsdz,
   });
+
+  revalidatePath("/dashboard");
+  redirect("/dashboard");
+}
+
+export async function updateDishAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const restaurantId = await requireRestaurant();
+
+  const dishId = String(formData.get("dishId") || "");
+  const name = String(formData.get("name") || "").trim();
+  const price = Number(formData.get("price") || 0);
+  if (!dishId || !name || !Number.isFinite(price) || price < 0) {
+    return { error: "نام غذا و قیمت معتبر (به تومان) الزامی است." };
+  }
+
+  await connectDB();
+
+  const dish = await Dish.findOne({ _id: dishId, restaurantId });
+  if (!dish) {
+    return { error: "غذا پیدا نشد." };
+  }
+
+  const thumbnail = formData.get("thumbnail") as File | null;
+  const glb = formData.get("modelGlb") as File | null;
+  const usdz = formData.get("modelUsdz") as File | null;
+
+  if (thumbnail && thumbnail.size > 0) {
+    dish.thumbnailUrl = await saveUploadedFile(thumbnail, restaurantId);
+  }
+  if (glb && glb.size > 0) {
+    dish.modelUrlGlb = await saveUploadedFile(glb, restaurantId);
+  }
+  if (usdz && usdz.size > 0) {
+    dish.modelUrlUsdz = await saveUploadedFile(usdz, restaurantId);
+  }
+
+  dish.name = name;
+  dish.nameEn = String(formData.get("nameEn") || "").trim();
+  dish.description = String(formData.get("description") || "");
+  dish.price = price;
+  dish.category = String(formData.get("category") || dish.category);
+
+  await dish.save();
 
   revalidatePath("/dashboard");
   redirect("/dashboard");
