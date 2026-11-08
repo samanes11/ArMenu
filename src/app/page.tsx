@@ -2,7 +2,6 @@ import Link from "next/link";
 import { connectDB } from "@/lib/db";
 import { Restaurant } from "@/lib/models/Restaurant";
 import { MENU_SECTIONS } from "@/lib/menu-sections";
-import { logMenuEvent } from "@/lib/actions/events";
 import { BrandLogo } from "@/components/menu/brand-logo";
 import { SectionIcon } from "@/components/menu/section-icons";
 import { ContactButton } from "@/components/menu/contact-button";
@@ -44,8 +43,6 @@ export default async function Home() {
     );
   }
 
-  // ثبت رویداد اسکن منو (آمار بازدید)؛ کد QR به همین صفحه می‌رسد
-  await logMenuEvent(restaurant._id.toString(), "scan");
 
   const tagline =
     restaurant.description && restaurant.description.length <= 24

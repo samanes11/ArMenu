@@ -5,7 +5,6 @@ import { Restaurant } from "@/lib/models/Restaurant";
 import { Dish } from "@/lib/models/Dish";
 import { currencyUnit, formatPrice } from "@/lib/format";
 import { findByCategory } from "@/lib/menu-sections";
-import { logMenuEvent } from "@/lib/actions/events";
 import { ArViewer } from "@/components/ar-viewer";
 
 export default async function DishDetailPage({
@@ -24,8 +23,6 @@ export default async function DishDetailPage({
     restaurantId: restaurant._id,
   }).lean();
   if (!dish) notFound();
-
-  await logMenuEvent(restaurant._id.toString(), "view", dish._id.toString());
 
   const found = findByCategory(dish.category);
   const backHref = found
