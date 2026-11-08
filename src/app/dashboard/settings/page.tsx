@@ -25,7 +25,6 @@ export default async function SettingsPage() {
         phone={restaurant.phone || ""}
         address={restaurant.address || ""}
         logoUrl={restaurant.logoUrl || ""}
-        slug={restaurant.slug}
       />
       <ThemeForm theme={theme} />
     </div>

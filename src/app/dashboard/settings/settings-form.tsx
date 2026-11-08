@@ -10,14 +10,12 @@ export function SettingsForm({
   phone,
   address,
   logoUrl,
-  slug,
 }: {
   name: string;
   description: string;
   phone: string;
   address: string;
   logoUrl: string;
-  slug: string;
 }) {
   const [state, formAction, pending] = useActionState(updateRestaurantAction, undefined);
 
@@ -55,10 +53,6 @@ export function SettingsForm({
         )}
         <input name="logo" type="file" accept="image/*" className="admin-file" />
       </div>
-
-      <p className="text-footnote text-white/45" dir="ltr">
-        slug: /r/{slug} <span dir="rtl">(فعلاً از داشبورد قابل تغییر نیست)</span>
-      </p>
 
       <Button type="submit" disabled={pending} className="w-full">
         {pending ? "در حال ذخیره..." : "ذخیره"}

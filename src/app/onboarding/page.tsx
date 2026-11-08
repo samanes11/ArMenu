@@ -21,12 +21,6 @@ export default function OnboardingPage() {
         </div>
 
         <div className="space-y-1.5">
-          <label className="admin-label">آدرس منو (slug)</label>
-          <input name="slug" className="admin-input" placeholder="سفره-خانه (اختیاری، خودکار ساخته می‌شود)" />
-          <p className="text-footnote text-white/45">آدرس نهایی: /r/آدرس-شما</p>
-        </div>
-
-        <div className="space-y-1.5">
           <label className="admin-label">توضیح کوتاه</label>
           <textarea name="description" className="admin-input" rows={3} />
         </div>

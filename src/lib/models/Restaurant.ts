@@ -4,7 +4,6 @@ const restaurantSchema = new Schema(
   {
     ownerId: { type: Schema.Types.ObjectId, ref: "User", required: true, unique: true },
     name: { type: String, required: true, trim: true },
-    slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     description: { type: String, default: "" },
     currency: { type: String, enum: ["TOMAN", "RIAL"], default: "TOMAN" },
     phone: { type: String, default: "" }, // برای دکمه‌ی «اطلاعات تماس»

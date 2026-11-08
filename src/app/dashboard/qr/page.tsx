@@ -12,7 +12,7 @@ export default async function QrPage() {
   if (!restaurant) return null;
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const menuUrl = `${siteUrl}/r/${restaurant.slug}`;
+  const menuUrl = siteUrl;
   const qrDataUrl = await QRCode.toDataURL(menuUrl, {
     width: 480,
     margin: 2,
@@ -22,9 +22,7 @@ export default async function QrPage() {
     <div className="print-sheet materialize admin-card mx-auto flex max-w-md flex-col items-center gap-4 p-8 text-center">
       <h2 className="text-display text-white">{restaurant.name}</h2>
 
-      <h1 className="text-title text-gold-400">
-        برای دیدن منو اسکن کنید
-      </h1>
+      <h1 className="text-title text-gold-400">برای دیدن منو اسکن کنید</h1>
 
       <p className="no-print text-caption text-white/60">
         این کد را چاپ و روی میزها نصب کنید.
@@ -32,11 +30,7 @@ export default async function QrPage() {
 
       <div className="rounded-2xl bg-white p-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={qrDataUrl}
-          alt="QR کد منو"
-          className="h-56 w-56"
-        />
+        <img src={qrDataUrl} alt="QR کد منو" className="h-56 w-56" />
       </div>
 
       <p dir="ltr" className="text-caption text-white/45">
@@ -48,7 +42,7 @@ export default async function QrPage() {
 
         <a
           href={qrDataUrl}
-          download={`qr-${restaurant.slug}.png`}
+          download="qr-menu.png"
           className="pressable rounded-xl bg-gold-400 px-4 py-2.5 text-sm font-bold text-black hover:bg-gold-300"
         >
           دانلود تصویر QR

@@ -10,12 +10,12 @@ import { ArViewer } from "@/components/ar-viewer";
 export default async function DishDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string; dishId: string }>;
+  params: Promise<{ dishId: string }>;
 }) {
-  const { slug, dishId } = await params;
+  const { dishId } = await params;
   await connectDB();
 
-  const restaurant = await Restaurant.findOne({ slug }).lean();
+  const restaurant = await Restaurant.findOne().lean();
   if (!restaurant) notFound();
 
   const dish = await Dish.findOne({

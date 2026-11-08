@@ -56,16 +56,6 @@ export default async function CategoryPage({
         بازگشت
       </Link>
 
-      <div className="materialize flex justify-center pt-10">
-        <BrandLogo
-          name={restaurant.name}
-          tagline={tagline}
-          logoUrl={restaurant.logoUrl || undefined}
-          size="md"
-          href="/"
-        />
-      </div>
-
       <h1
         className="rise-in mt-9 text-center text-[34px] font-medium leading-tight text-white"
         style={{ ["--delay" as string]: "60ms" }}
@@ -100,7 +90,7 @@ export default async function CategoryPage({
             >
               <DishCard
                 unit={unit}
-                href={`/r/${restaurant.slug}/${dish._id.toString()}`}
+                href={`/dish/${dish._id.toString()}`}
                 dish={{
                   id: dish._id.toString(),
                   name: dish.name,
