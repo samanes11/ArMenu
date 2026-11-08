@@ -24,7 +24,6 @@ export default async function DishDetailPage({
 
   await logMenuEvent(restaurant._id.toString(), "view", dish._id.toString());
 
-  // بازگشت به همان دسته‌ای که کاربر از آن آمده؛ اگر دسته‌ی غذا ناشناخته بود، صفحه‌ی اول
   const found = findByCategory(dish.category);
   const backHref = found ? `/menu/${found.section.key}/${encodeURIComponent(found.category.label)}` : "/";
   const unit = currencyUnit(restaurant.currency);
@@ -32,7 +31,6 @@ export default async function DishDetailPage({
   return (
     <main className="menu-theme mx-auto min-h-[100dvh] max-w-2xl px-4 py-5">
       <div className="relative">
-        {/* دکمه‌ی بازگشت: چیپ شناور نیمه‌شفاف روی تصویر/مدل */}
         <Link
           href={backHref}
           className="pressable material-chip pop-in absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full shadow-chip"
@@ -55,10 +53,10 @@ export default async function DishDetailPage({
         )}
       </div>
 
-      <div className="rise-in mt-6" style={{ ["--delay" as string]: "140ms" }}>
+      <div className="rise-in mt-6 text-center" style={{ ["--delay" as string]: "140ms" }}>
         <h1 className="text-[26px] font-bold leading-snug text-gold-400">{dish.name}</h1>
         {dish.nameEn && <p className="text-[16px] text-white">{dish.nameEn}</p>}
-        <p className="mt-2 text-[18px] font-medium text-white">
+        <p className="mt-2 text-center text-[18px] font-medium text-white">
           <span dir="ltr" className="inline-block">
             {formatPrice(dish.price, unit)}
           </span>

@@ -109,7 +109,7 @@ export default async function Home() {
         dir="ltr"
         className="absolute bottom-[3.9rem] right-5 z-10 text-[14px] text-white/45"
       >
-        Powered By <span className="text-gold-400">Khodemoon</span>
+        Powered By <span className="text-gold-400">Khoodemon</span>
       </p>
 
       <footer className="absolute inset-x-0 bottom-4 z-10 text-center">
