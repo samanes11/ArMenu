@@ -8,6 +8,19 @@ import { getSession } from "@/lib/auth";
 import { saveUploadedFile } from "@/lib/storage";
 import type { ActionState } from "@/lib/actions/auth";
 
+async function resolveAsset(
+  formData: FormData,
+  fileKey: string,
+  urlKey: string,
+  restaurantId: string,
+): Promise<string | null> {
+  const file = formData.get(fileKey) as File | null;
+  if (file && file.size > 0) return saveUploadedFile(file, restaurantId);
+  const url = String(formData.get(urlKey) || "").trim();
+  if (url && /^(https?:\/\/|\/)/i.test(url)) return url;
+  return null;
+}
+
 async function requireRestaurant() {
   const session = await getSession();
   if (!session?.restaurantId) redirect("/login");
@@ -28,18 +41,15 @@ export async function createDishAction(
 
   await connectDB();
 
-  const thumbnail = formData.get("thumbnail") as File | null;
-  const glb = formData.get("modelGlb") as File | null;
-  const usdz = formData.get("modelUsdz") as File | null;
-
   const thumbnailUrl =
-    thumbnail && thumbnail.size > 0
-      ? await saveUploadedFile(thumbnail, restaurantId)
-      : "";
+    (await resolveAsset(formData, "thumbnail", "thumbnailUrl", restaurantId)) ??
+    "";
   const modelUrlGlb =
-    glb && glb.size > 0 ? await saveUploadedFile(glb, restaurantId) : "";
+    (await resolveAsset(formData, "modelGlb", "modelUrlGlb", restaurantId)) ??
+    "";
   const modelUrlUsdz =
-    usdz && usdz.size > 0 ? await saveUploadedFile(usdz, restaurantId) : "";
+    (await resolveAsset(formData, "modelUsdz", "modelUrlUsdz", restaurantId)) ??
+    "";
 
   await Dish.create({
     restaurantId,
@@ -77,19 +87,27 @@ export async function updateDishAction(
     return { error: "غذا پیدا نشد." };
   }
 
-  const thumbnail = formData.get("thumbnail") as File | null;
-  const glb = formData.get("modelGlb") as File | null;
-  const usdz = formData.get("modelUsdz") as File | null;
-
-  if (thumbnail && thumbnail.size > 0) {
-    dish.thumbnailUrl = await saveUploadedFile(thumbnail, restaurantId);
-  }
-  if (glb && glb.size > 0) {
-    dish.modelUrlGlb = await saveUploadedFile(glb, restaurantId);
-  }
-  if (usdz && usdz.size > 0) {
-    dish.modelUrlUsdz = await saveUploadedFile(usdz, restaurantId);
-  }
+  const t = await resolveAsset(
+    formData,
+    "thumbnail",
+    "thumbnailUrl",
+    restaurantId,
+  );
+  const g = await resolveAsset(
+    formData,
+    "modelGlb",
+    "modelUrlGlb",
+    restaurantId,
+  );
+  const u = await resolveAsset(
+    formData,
+    "modelUsdz",
+    "modelUrlUsdz",
+    restaurantId,
+  );
+  if (t !== null) dish.thumbnailUrl = t;
+  if (g !== null) dish.modelUrlGlb = g;
+  if (u !== null) dish.modelUrlUsdz = u;
 
   dish.name = name;
   dish.nameEn = String(formData.get("nameEn") || "").trim();

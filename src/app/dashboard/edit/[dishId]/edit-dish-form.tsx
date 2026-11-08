@@ -15,6 +15,8 @@ export function EditDishForm({
     name: string;
     nameEn: string;
     description: string;
+    modelUrlGlb: string;
+    modelUrlUsdz: string;
     price: number;
     category: string;
     thumbnailUrl: string;
@@ -109,6 +111,15 @@ export function EditDishForm({
         />
       </div>
 
+      <input
+        name="thumbnailUrl"
+        type="url"
+        dir="ltr"
+        defaultValue={dish.thumbnailUrl}
+        placeholder="یا لینک تصویر"
+        className={`${inputClass} mt-2`}
+      />
+
       <div className="space-y-1.5 sm:col-span-2">
         <label className="admin-label">توضیحات</label>
         <textarea
@@ -131,6 +142,15 @@ export function EditDishForm({
             className="admin-file"
           />
         </div>
+
+        <input
+          name="modelUrlGlb"
+          type="url"
+          dir="ltr"
+          defaultValue={dish.modelUrlGlb}
+          placeholder="یا لینک GLB"
+          className={`${inputClass} mt-2`}
+        />
         <div className="space-y-1.5">
           <label className="admin-label">مدل سه‌بعدی (USDZ) — اختیاری</label>
           <input
@@ -140,6 +160,15 @@ export function EditDishForm({
             className="admin-file"
           />
         </div>
+
+        <input
+          name="modelUrlUsdz"
+          type="url"
+          dir="ltr"
+          defaultValue={dish.modelUrlUsdz}
+          placeholder="یا لینک USDZ"
+          className={`${inputClass} mt-2`}
+        />
       </div>
 
       <Button type="submit" disabled={pending} className="w-full sm:col-span-2">

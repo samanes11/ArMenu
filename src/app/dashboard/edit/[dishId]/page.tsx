@@ -31,6 +31,8 @@ export default async function EditDishPage({
           price: dish.price,
           category: dish.category,
           thumbnailUrl: dish.thumbnailUrl || "",
+          modelUrlGlb: dish.modelUrlGlb || "",
+          modelUrlUsdz: dish.modelUrlUsdz || "",
         }}
       />
     </div>
