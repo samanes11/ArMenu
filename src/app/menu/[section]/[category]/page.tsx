@@ -73,6 +73,14 @@ export default async function CategoryPage({
         {category.label}
       </h1>
 
+      <div
+        aria-hidden="true"
+        className="cat-divider rise-in mt-3"
+        style={{ ["--delay" as string]: "80ms" }}
+      >
+        <span className="cat-divider-dot" />
+      </div>
+
       {dishes.length === 0 ? (
         <p
           className="rise-in py-20 text-center text-[15px] text-menu-muted"

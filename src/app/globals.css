@@ -470,3 +470,35 @@ a:active > .menu-arch {
   .print-sheet { background: #fff !important; border: none !important; box-shadow: none !important; backdrop-filter: none !important; }
   .print-sheet, .print-sheet * { color: #000 !important; animation: none !important; filter: none !important; }
 }
+
+/* خط تزئینی زیر عنوان دسته */
+.cat-divider {
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.cat-divider::before,
+.cat-divider::after {
+  content: "";
+  width: 46px;
+  height: 1px;
+}
+.cat-divider::before {
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.55));
+}
+.cat-divider::after {
+  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.55));
+}
+.cat-divider-dot {
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  background: var(--gold-400);
+}
+
+.cat-active-box {
+  background: color-mix(in srgb, var(--gold-400) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gold-400) 50%, transparent);
+}
