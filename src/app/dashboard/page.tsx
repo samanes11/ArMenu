@@ -15,6 +15,7 @@ export default async function DashboardPage() {
   const serialized = dishes.map((d) => ({
     _id: d._id.toString(),
     name: d.name,
+    nameEn: d.nameEn || "",
     description: d.description,
     price: d.price,
     category: d.category,

@@ -12,9 +12,7 @@ export function slugify(input: string) {
     .replace(/-+/g, "-");
 }
 
-// قیمت به سبک منوی عمومی: «T ۲۸۸۰۰۰۰» (ارقام فارسی، بدون جداکننده‌ی هزارگان).
-// unit: «T» برای تومان، «R» برای ریال. grouped=true برای جمع کل در یادداشت.
-export function formatPrice(amount: number, unit = "T", grouped = false) {
+export function formatPrice(amount: number, unit = "T", grouped = true) {
   return `${unit} ${amount.toLocaleString("fa-IR", { useGrouping: grouped })}`;
 }
 
