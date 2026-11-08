@@ -6,6 +6,7 @@ export default {
     extend: {
       fontFamily: {
         vazir: ["var(--font-vazir)", "Tahoma", "sans-serif"],
+        en: ["var(--font-en)", "ui-sans-serif", "sans-serif"],
       },
       colors: {
         // پالت منوی عمومی (تیره، طلایی و سبز-فیروزه‌ای) — مقادیر از متغیرهای CSS
@@ -38,7 +39,8 @@ export default {
       boxShadow: {
         chip: "0 8px 24px -8px rgba(0, 0, 0, 0.35)",
         card: "0 1px 2px rgba(15, 15, 13, 0.04), 0 8px 24px -12px rgba(15, 15, 13, 0.1)",
-        "card-hover": "0 2px 4px rgba(15, 15, 13, 0.05), 0 16px 32px -12px rgba(15, 15, 13, 0.16)",
+        "card-hover":
+          "0 2px 4px rgba(15, 15, 13, 0.05), 0 16px 32px -12px rgba(15, 15, 13, 0.16)",
       },
     },
   },
