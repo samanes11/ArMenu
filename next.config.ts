@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
     // مدل سه‌بعدی GLB/USDZ) کم بود و باعث قطع ناقص فرم و خطای «Unexpected end of form»
     // می‌شد. این مقدار باید هم‌اندازه یا بیشتر از bodySizeLimit بالا باشد.
     middlewareClientMaxBodySize: "50mb",
+    staleTimes: {
+    dynamic: 900, 
+    static: 900,
+  },
   },
 };
 
