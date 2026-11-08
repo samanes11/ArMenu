@@ -75,8 +75,8 @@ export default async function Home() {
             <Link
               key={section.key}
               href={`/menu/${section.key}`}
-              className="rise-in flex w-[clamp(54px,16vw,72px)] flex-col items-center"
-              style={{ ["--delay" as string]: `${i * 70}ms` }}
+              className="drop-in flex w-[clamp(54px,16vw,72px)] flex-col items-center"
+              style={{ ["--delay" as string]: `${300 + i * 150}ms` }}
             >
               <span
                 className={`menu-arch flex w-full items-center justify-center rounded-t-full ${ARCH_ASPECT[i]} ${ARCH_ICON_SHIFT[i]}`}
@@ -109,7 +109,7 @@ export default async function Home() {
         dir="ltr"
         className="absolute bottom-[3.9rem] right-5 z-10 text-[14px] text-white/45"
       >
-        Powered By <span className="text-gold-400">DishAR</span>
+        Powered By <span className="text-gold-400">Khodemoon</span>
       </p>
 
       <footer className="absolute inset-x-0 bottom-4 z-10 text-center">

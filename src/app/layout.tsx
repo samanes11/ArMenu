@@ -8,6 +8,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "دیش‌آر | منوی واقعیت‌افزوده رستوران",
   description: "منوی AR روی میز: غذا را قبل از سفارش به‌صورت سه‌بعدی ببینید.",
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,13 +32,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       }
     }
   } catch {
-    // اگر دیتابیس در دسترس نبود، رنگ‌های پیش‌فرض استفاده می‌شوند
   }
 
   return (
     <html lang="fa" dir="rtl" style={{ ...buildBrandStyleVars(themeColor), ...buildThemeStyleVars(theme) }}>
       <body className="font-vazir bg-neutral-50 text-neutral-900 antialiased">
-        {/* وب‌کامپوننت model-viewer برای نمایش مدل سه‌بعدی/AR در مرورگر */}
         <Script
           type="module"
           src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"

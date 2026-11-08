@@ -7,16 +7,16 @@ import { UtensilsCrossed, QrCode, Settings, Store } from "lucide-react";
 
 const ITEMS = [
   {
-    href: "/dashboard",
-    label: "غذاها",
-    icon: UtensilsCrossed,
-    match: (p: string) => p === "/dashboard" || p.startsWith("/dashboard/edit"),
-  },
-  {
     href: "/dashboard/qr",
     label: "کد QR",
     icon: QrCode,
     match: (p: string) => p.startsWith("/dashboard/qr"),
+  },
+  {
+    href: "/dashboard",
+    label: "غذاها",
+    icon: UtensilsCrossed,
+    match: (p: string) => p === "/dashboard" || p.startsWith("/dashboard/edit"),
   },
   {
     href: "/dashboard/settings",
