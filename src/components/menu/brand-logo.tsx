@@ -23,22 +23,17 @@ export function BrandLogo({
       className={`mx-auto h-auto object-contain ${size === "lg" ? "max-h-[84px] w-[200px]" : "max-h-[72px] w-[200px]"}`}
     />
   ) : (
-    <span className="inline-flex max-w-[86vw] flex-col items-end">
+    <span className="inline-flex max-w-[86vw] flex-col items-start">
       <span
-        className={`logo-gold font-black leading-[1.15] tracking-tight ${size === "lg" ? "text-[46px]" : "text-[40px]"}`}
+        className={`logo-gold text-right font-black leading-[1.15] tracking-tight ${size === "lg" ? "text-[46px]" : "text-[40px]"}`}
         style={{ transform: "skewX(-9deg)" }}
       >
         {name}
       </span>
       <span
-        className="mt-0.5 h-[3.5px] w-full rounded-full bg-gradient-to-l from-gold-300 via-gold-400 to-gold-500"
+        className="mt-3 h-[3.5px] w-[92%] self-start rounded-full bg-gradient-to-l from-gold-300 via-gold-400 to-gold-500"
         style={{ transform: "rotate(-1.5deg)" }}
       />
-      {tagline && (
-        <span dir="ltr" className="mt-1 text-[10.5px] font-extrabold uppercase tracking-[0.14em] text-gold-400">
-          {tagline}
-        </span>
-      )}
     </span>
   );
 

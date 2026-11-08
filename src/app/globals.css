@@ -486,10 +486,10 @@ a:active > .menu-arch {
   height: 1px;
 }
 .cat-divider::before {
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.55));
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.95));
 }
 .cat-divider::after {
-  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.55));
+  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.95));
 }
 .cat-divider-dot {
   width: 6px;
