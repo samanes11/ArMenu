@@ -12,10 +12,10 @@ export function slugify(input: string) {
     .replace(/-+/g, "-");
 }
 
-export function formatPrice(amount: number, unit = "T", grouped = true) {
-  return `${unit} ${amount.toLocaleString("fa-IR", { useGrouping: grouped })}`;
+export function formatPrice(amount: number, unit = "تومان", grouped = true) {
+  return `${amount.toLocaleString("fa-IR", { useGrouping: grouped })} ${unit}`;
 }
 
 export function currencyUnit(currency?: string) {
-  return currency === "RIAL" ? "R" : "T";
+  return currency === "RIAL" ? "ریال" : "تومان";
 }

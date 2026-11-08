@@ -60,9 +60,7 @@ export function DishCard({ dish, href, unit }: { dish: DishCardData; href: strin
           <p className="mt-0.5 line-clamp-3 text-[12.5px] leading-[1.7] text-menu-muted">{dish.description}</p>
         )}
         <p className="mt-auto pt-2 text-[14px] font-medium text-white">
-          <span dir="ltr" className="inline-block">
-            {formatPrice(dish.price, unit)}
-          </span>
+          <span>{formatPrice(dish.price, unit)}</span>
         </p>
       </div>
 

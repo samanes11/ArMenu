@@ -19,13 +19,18 @@ export default async function DishDetailPage({
   const restaurant = await Restaurant.findOne({ slug }).lean();
   if (!restaurant) notFound();
 
-  const dish = await Dish.findOne({ _id: dishId, restaurantId: restaurant._id }).lean();
+  const dish = await Dish.findOne({
+    _id: dishId,
+    restaurantId: restaurant._id,
+  }).lean();
   if (!dish) notFound();
 
   await logMenuEvent(restaurant._id.toString(), "view", dish._id.toString());
 
   const found = findByCategory(dish.category);
-  const backHref = found ? `/menu/${found.section.key}/${encodeURIComponent(found.category.label)}` : "/";
+  const backHref = found
+    ? `/menu/${found.section.key}/${encodeURIComponent(found.category.label)}`
+    : "/";
   const unit = currencyUnit(restaurant.currency);
 
   return (
@@ -36,16 +41,37 @@ export default async function DishDetailPage({
           className="pressable material-chip pop-in absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full shadow-chip"
           aria-label="بازگشت به منو"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M9 5l7 7-7 7"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </Link>
 
         {dish.modelUrlGlb ? (
-          <ArViewer glbSrc={dish.modelUrlGlb} usdzSrc={dish.modelUrlUsdz} alt={dish.name} posterSrc={dish.thumbnailUrl} />
+          <ArViewer
+            glbSrc={dish.modelUrlGlb}
+            usdzSrc={dish.modelUrlUsdz}
+            alt={dish.name}
+            posterSrc={dish.thumbnailUrl}
+          />
         ) : dish.thumbnailUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={dish.thumbnailUrl} alt={dish.name} className="materialize h-72 w-full rounded-[1.75rem] border border-menu-line object-cover" />
+          <img
+            src={dish.thumbnailUrl}
+            alt={dish.name}
+            className="materialize h-72 w-full rounded-[1.75rem] border border-menu-line object-cover"
+          />
         ) : (
           <div className="materialize flex h-64 items-center justify-center rounded-[1.75rem] border border-menu-line bg-menu-card text-menu-muted">
             <p className="text-body">مدل سه‌بعدی برای این غذا ثبت نشده است</p>
@@ -53,22 +79,41 @@ export default async function DishDetailPage({
         )}
       </div>
 
-      <div className="rise-in mt-6 text-center" style={{ ["--delay" as string]: "140ms" }}>
-        <h1 className="text-[26px] font-bold leading-snug text-gold-400">{dish.name}</h1>
+      <div
+        className="rise-in mt-6 text-center"
+        style={{ ["--delay" as string]: "140ms" }}
+      >
+        <h1 className="text-[26px] font-bold leading-snug text-gold-400">
+          {dish.name}
+        </h1>
         {dish.nameEn && <p className="text-[16px] text-white">{dish.nameEn}</p>}
-        <p className="mt-2 text-center text-[18px] font-medium text-white">
-          <span dir="ltr" className="inline-block">
-            {formatPrice(dish.price, unit)}
-          </span>
+        <p className="mt-2 text-[18px] font-medium text-white">
+          {formatPrice(dish.price, unit)}
         </p>
-        {dish.description && <p className="mt-3 text-[15px] leading-8 text-menu-muted">{dish.description}</p>}
+        {dish.description && (
+          <p className="mt-3 text-[15px] leading-8 text-menu-muted">
+            {dish.description}
+          </p>
+        )}
 
         {dish.modelUrlGlb && (
           <p className="mt-5 flex items-center gap-1.5 text-[12px] text-menu-muted">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
             </svg>
-            با زدن «مشاهده روی میز»، دوربین گوشی باز می‌شود و غذا را در اندازه‌ی واقعی روی میزتان می‌بینید.
+            با زدن «مشاهده روی میز»، دوربین گوشی باز می‌شود و غذا را در اندازه‌ی
+            واقعی روی میزتان می‌بینید.
           </p>
         )}
       </div>
