@@ -24,28 +24,46 @@ export default async function CategoryPage({
   const restaurant = await Restaurant.findOne().lean();
   if (!restaurant) notFound();
 
-  const dishes = await Dish.find({ restaurantId: restaurant._id, category: categoryLabel, available: true })
+  const dishes = await Dish.find({
+    restaurantId: restaurant._id,
+    category: categoryLabel,
+    available: true,
+  })
     .sort({ order: 1, createdAt: -1 })
     .lean();
 
   const unit = currencyUnit(restaurant.currency);
-  const tagline = restaurant.description && restaurant.description.length <= 24 ? restaurant.description : "";
+  const tagline =
+    restaurant.description && restaurant.description.length <= 24
+      ? restaurant.description
+      : "";
 
   return (
     <div className="relative px-3 pb-28 pt-6 sm:px-6">
-      {/* دکمه‌ی «بازگشت» چسبیده به لبه‌ی راست، برمی‌گردد به صفحه‌ی اول */}
       <Link
         href="/"
-        className="pressable pop-in absolute right-0 top-6 z-20 flex items-center gap-2 rounded-l-full bg-menu-teal py-2 pl-4 pr-3 text-[15px] text-gold-400"
+        className="pressable pop-in absolute right-0 top-6 z-20 flex items-center gap-2 rounded-l-full bg-menu-teal py-2 pl-4 pr-3 text-[15px] text-white"
       >
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
           <path d="M12 3 2 12h3v8h5v-6h4v6h5v-8h3L12 3z" />
         </svg>
         بازگشت
       </Link>
 
       <div className="materialize flex justify-center pt-10">
-        <BrandLogo name={restaurant.name} tagline={tagline} logoUrl={restaurant.logoUrl || undefined} size="md" href="/" />
+        <BrandLogo
+          name={restaurant.name}
+          tagline={tagline}
+          logoUrl={restaurant.logoUrl || undefined}
+          size="md"
+          href="/"
+        />
       </div>
 
       <h1
@@ -56,13 +74,22 @@ export default async function CategoryPage({
       </h1>
 
       {dishes.length === 0 ? (
-        <p className="rise-in py-20 text-center text-[15px] text-menu-muted" style={{ ["--delay" as string]: "100ms" }}>
+        <p
+          className="rise-in py-20 text-center text-[15px] text-menu-muted"
+          style={{ ["--delay" as string]: "100ms" }}
+        >
           فعلاً غذایی در این دسته موجود نیست.
         </p>
       ) : (
         <div className="mx-auto mt-9 grid max-w-[620px] grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-7 lg:max-w-[860px] lg:grid-cols-4">
           {dishes.map((dish, i) => (
-            <div key={dish._id.toString()} className="rise-in" style={{ ["--delay" as string]: `${100 + Math.min(i, 10) * 35}ms` }}>
+            <div
+              key={dish._id.toString()}
+              className="rise-in"
+              style={{
+                ["--delay" as string]: `${100 + Math.min(i, 10) * 35}ms`,
+              }}
+            >
               <DishCard
                 unit={unit}
                 href={`/r/${restaurant.slug}/${dish._id.toString()}`}

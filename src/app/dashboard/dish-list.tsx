@@ -152,54 +152,69 @@ export function DishList({ dishes }: { dishes: DishRow[] }) {
 
             <ul className="admin-card divide-y divide-white/10 overflow-hidden">
               {group.items.map((dish) => (
-<li key={dish._id} className="flex items-center gap-2.5 p-3 sm:gap-4 sm:p-4">
-  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-black sm:h-14 sm:w-14">
-    {dish.thumbnailUrl ? (
-      <Image
-        src={dish.thumbnailUrl}
-        alt={dish.name}
-        width={56}
-        height={56}
-        className="h-full w-full object-cover"
-      />
-    ) : null}
-  </div>
+                <li
+                  key={dish._id}
+                  className="flex items-center gap-2.5 p-3 sm:gap-4 sm:p-4"
+                >
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-black sm:h-14 sm:w-14">
+                    {dish.thumbnailUrl ? (
+                      <Image
+                        src={dish.thumbnailUrl}
+                        alt={dish.name}
+                        width={56}
+                        height={56}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                  </div>
 
-  <div className="min-w-0 flex-1">
-    <p className="text-headline truncate text-gold-400">{dish.name}</p>
-    <p className="text-caption text-white/55">{formatToman(dish.price)}</p>
-  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-headline truncate text-white">
+                      {dish.name}
+                    </p>
+                    <p className="text-caption text-gold-400">
+                      {formatToman(dish.price)}
+                    </p>
+                  </div>
 
-  <ToggleSwitch
-    size="sm"
-    checked={dish.available}
-    label={dish.available ? "فعال" : "غیرفعال"}
-    onChange={() => toggleDishAvailabilityAction(dish._id)}
-  />
+                  <ToggleSwitch
+                    size="sm"
+                    checked={dish.available}
+                    label={dish.available ? "فعال" : "غیرفعال"}
+                    onChange={() => toggleDishAvailabilityAction(dish._id)}
+                  />
 
-  <Link
-    href={`/dashboard/edit/${dish._id}`}
-    aria-label="ویرایش"
-    className="pressable flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gold-400 hover:bg-gold-400/10 sm:h-auto sm:w-auto sm:px-2 sm:py-1.5"
-  >
-    <Pencil size={17} strokeWidth={1.8} className="sm:hidden" />
-    <span className="text-caption hidden font-medium sm:inline">ویرایش</span>
-  </Link>
+                  <Link
+                    href={`/dashboard/edit/${dish._id}`}
+                    aria-label="ویرایش"
+                    className="pressable flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gold-400 hover:bg-gold-400/10 sm:h-auto sm:w-auto sm:px-2 sm:py-1.5"
+                  >
+                    <Pencil size={17} strokeWidth={1.8} className="sm:hidden" />
+                    <span className="text-caption hidden font-medium sm:inline">
+                      ویرایش
+                    </span>
+                  </Link>
 
-  <button
-    type="button"
-    aria-label="حذف"
-    onClick={() => {
-      if (window.confirm(`«${dish.name}» حذف شود؟ این عمل قابل بازگشت نیست.`)) {
-        startTransition(() => deleteDishAction(dish._id));
-      }
-    }}
-    className="pressable flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-red-300 hover:bg-red-500/15 sm:h-auto sm:w-auto sm:px-2 sm:py-1.5"
-  >
-    <Trash2 size={17} strokeWidth={1.8} className="sm:hidden" />
-    <span className="text-caption hidden font-medium sm:inline">حذف</span>
-  </button>
-</li>
+                  <button
+                    type="button"
+                    aria-label="حذف"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `«${dish.name}» حذف شود؟ این عمل قابل بازگشت نیست.`,
+                        )
+                      ) {
+                        startTransition(() => deleteDishAction(dish._id));
+                      }
+                    }}
+                    className="pressable flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-red-300 hover:bg-red-500/15 sm:h-auto sm:w-auto sm:px-2 sm:py-1.5"
+                  >
+                    <Trash2 size={17} strokeWidth={1.8} className="sm:hidden" />
+                    <span className="text-caption hidden font-medium sm:inline">
+                      حذف
+                    </span>
+                  </button>
+                </li>
               ))}
             </ul>
           </section>

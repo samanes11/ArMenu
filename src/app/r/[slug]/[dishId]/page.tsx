@@ -83,11 +83,11 @@ export default async function DishDetailPage({
         className="rise-in mt-6 text-center"
         style={{ ["--delay" as string]: "140ms" }}
       >
-        <h1 className="text-[26px] font-bold leading-snug text-gold-400">
+        <h1 className="text-[26px] font-bold leading-snug text-white">
           {dish.name}
         </h1>
         {dish.nameEn && <p className="text-[16px] text-white">{dish.nameEn}</p>}
-        <p className="mt-2 text-[18px] font-medium text-white">
+        <p className="mt-2 text-[18px] font-medium text-gold-400">
           {formatPrice(dish.price, unit)}
         </p>
         {dish.description && (

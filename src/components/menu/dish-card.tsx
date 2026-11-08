@@ -54,12 +54,12 @@ export function DishCard({ dish, href, unit }: { dish: DishCardData; href: strin
       </Link>
 
       <div className="flex flex-1 flex-col bg-menu-card px-3 pb-2.5 pt-3 text-right">
-        <h3 className="text-[15px] font-medium leading-6 text-gold-400">{dish.name}</h3>
-        {dish.nameEn && <p className="text-[14px] leading-6 text-white">{dish.nameEn}</p>}
+        <h3 className="text-[15px] font-medium leading-6 text-white">{dish.name}</h3>
+        {dish.nameEn && <p className="text-[14px] leading-6 text-white/60">{dish.nameEn}</p>}
         {dish.description && (
           <p className="mt-0.5 line-clamp-3 text-[12.5px] leading-[1.7] text-menu-muted">{dish.description}</p>
         )}
-        <p className="mt-auto pt-2 text-[14px] font-medium text-white">
+        <p className="mt-auto pt-2 text-[14px] font-medium text-gold-400">
           <span>{formatPrice(dish.price, unit)}</span>
         </p>
       </div>

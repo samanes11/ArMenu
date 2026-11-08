@@ -118,7 +118,7 @@ export async function updateDishAction(
   await dish.save();
 
   revalidatePath("/dashboard");
-  redirect("/dashboard");
+  return { success: true };
 }
 
 export async function toggleDishAvailabilityAction(dishId: string) {

@@ -1,16 +1,56 @@
+import mongoose from "mongoose";
 import { getSession } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
 import { Dish } from "@/lib/models/Dish";
+import { MenuEvent } from "@/lib/models/MenuEvent";
 import { DishList } from "./dish-list";
-import { DishForm } from "./dish-form";
+import { AddDishButton } from "./add-dish-button";
 
 export default async function DashboardPage() {
   const session = await getSession();
   await connectDB();
 
-  const dishes = await Dish.find({ restaurantId: session!.restaurantId })
-    .sort({ order: 1, createdAt: -1 })
-    .lean();
+  const rid = new mongoose.Types.ObjectId(session!.restaurantId as string);
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  const weekAgo = new Date(Date.now() - 7 * 86400000);
+
+  const [dishes, scansToday, scansWeek, viewsWeek, topRaw] = await Promise.all([
+    Dish.find({ restaurantId: rid }).sort({ order: 1, createdAt: -1 }).lean(),
+    MenuEvent.countDocuments({
+      restaurantId: rid,
+      type: "scan",
+      createdAt: { $gte: startOfDay },
+    }),
+    MenuEvent.countDocuments({
+      restaurantId: rid,
+      type: "scan",
+      createdAt: { $gte: weekAgo },
+    }),
+    MenuEvent.countDocuments({
+      restaurantId: rid,
+      type: "view",
+      createdAt: { $gte: weekAgo },
+    }),
+    MenuEvent.aggregate<{ _id: mongoose.Types.ObjectId; n: number }>([
+      {
+        $match: {
+          restaurantId: rid,
+          type: "view",
+          dishId: { $ne: null },
+          createdAt: { $gte: weekAgo },
+        },
+      },
+      { $group: { _id: "$dishId", n: { $sum: 1 } } },
+      { $sort: { n: -1 } },
+      { $limit: 5 },
+    ]),
+  ]);
+
+  const names = new Map(dishes.map((d) => [d._id.toString(), d.name]));
+  const top = topRaw
+    .filter((t) => names.has(t._id.toString()))
+    .map((t) => ({ name: names.get(t._id.toString())!, n: t.n }));
 
   const serialized = dishes.map((d) => ({
     _id: d._id.toString(),
@@ -24,14 +64,14 @@ export default async function DashboardPage() {
   }));
 
   return (
-    <div className="space-y-10">
-      <section className="rise-in">
-        <h1 className="text-title mb-4 text-gold-400">افزودن غذای جدید</h1>
-        <DishForm />
-      </section>
-
+    <div className="space-y-8">
       <section className="rise-in" style={{ ["--delay" as string]: "80ms" }}>
-        <h2 className="text-title mb-4 text-gold-400">منوی غذاها ({serialized.length})</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-title text-white">
+            منوی غذاها ({serialized.length})
+          </h2>
+          <AddDishButton />
+        </div>
         <DishList dishes={serialized} />
       </section>
     </div>

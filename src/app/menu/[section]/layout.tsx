@@ -24,7 +24,7 @@ export default async function SectionLayout({
   return (
     <>
       <CategorySidebar sectionKey={section.key} categories={categories} />
-      <div className="min-h-[100dvh] pl-[87px]">{children}</div>
+      <div className="min-h-[100dvh] pl-[68px] min-[400px]:pl-[87px]">{children}</div>
     </>
   );
 }

@@ -32,7 +32,7 @@ export function CategorySidebar({
   return (
     <nav
       aria-label="دسته‌بندی‌ها"
-      className="fixed bottom-0 left-0 top-0 z-30 w-[87px] overflow-y-auto bg-menu-teal pb-8 pt-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="fixed bottom-0 left-0 top-0 z-30 w-[68px] min-[400px]:w-[87px] overflow-y-auto bg-menu-teal pb-8 pt-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       <ul className="flex flex-col gap-5">
         {categories.map((category) => {
@@ -56,17 +56,17 @@ export function CategorySidebar({
                 <motion.span
                   animate={{ scale: isActive ? 1.08 : 1 }}
                   transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                  className="relative flex h-[50px] w-[50px] items-center justify-center overflow-hidden rounded-full bg-black text-[22px]"
+                  className="relative flex h-[42px] w-[42px] min-[400px]:h-[50px] min-[400px]:w-[50px] items-center justify-center overflow-hidden rounded-full bg-black text-[22px]"
                 >
                   <CategoryIcon
                     icon={category.icon}
-                    className="h-[26px] w-[26px] text-gold-400"
+                    className={`h-[26px] w-[26px] ${isActive ? "text-gold-400" : "text-white/70"}`}
                   />
                 </motion.span>
-                <span className="mt-2 text-[15px] leading-6 text-white">
+                <span className="mt-2 text-[13px] leading-5 min-[400px]:text-[15px] min-[400px]:leading-6 text-white">
                   {category.label}
                 </span>
-                <span className="min-h-5 text-[13px] leading-5 text-white/80">
+                <span className="hidden min-[400px]:block min-h-5 text-[14px] leading-5 text-white/80">
                   {category.labelEn}
                 </span>
               </Link>

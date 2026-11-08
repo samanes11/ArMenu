@@ -1,10 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 
-// برگه‌ی پایین‌صفحه (مثل «یادداشت من» و «اطلاعات تماس») با گذار نرم:
-// پس‌زمینه محو می‌شود و برگه از پایین با افکت فنری بالا می‌آید؛ در بسته شدن
-// هم همین مسیر برعکس طی می‌شود (نه یک قطع ناگهانی).
 export function BottomSheet({
   open,
   onClose,
@@ -16,7 +15,11 @@ export function BottomSheet({
   ariaLabel: string;
   children: React.ReactNode;
 }) {
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -31,7 +34,7 @@ export function BottomSheet({
             role="dialog"
             aria-label={ariaLabel}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg overflow-y-auto rounded-t-3xl border border-menu-line bg-[#161616]"
+            className="w-full max-w-lg overflow-y-auto rounded-t-3xl border border-menu-line bg-[#161616] text-white"
             style={{ maxHeight: "80dvh" }}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -42,6 +45,7 @@ export function BottomSheet({
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

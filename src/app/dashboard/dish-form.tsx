@@ -1,17 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { createDishAction } from "@/lib/actions/dish";
 import { Button } from "@/components/button";
 import { MENU_SECTIONS } from "@/lib/menu-sections";
 
 const inputClass = "admin-input";
 
-export function DishForm() {
+export function DishForm({ onDone }: { onDone?: () => void }) {
   const [state, formAction, pending] = useActionState(
     createDishAction,
     undefined,
   );
+
+  useEffect(() => {
+    if (state?.success) onDone?.();
+  }, [state, onDone]);
 
   return (
     <form
@@ -126,7 +130,7 @@ export function DishForm() {
           placeholder="یا لینک USDZ: https://...usdz"
           className={`${inputClass} mt-2`}
         />
-        
+
         <p className="text-footnote text-white/50 sm:col-span-2">
           بدون GLB، دکمه‌ی «مشاهده روی میز» برای این غذا نمایش داده نمی‌شود.
         </p>

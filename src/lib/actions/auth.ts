@@ -5,7 +5,7 @@ import { connectDB } from "@/lib/db";
 import { User } from "@/lib/models/User";
 import { hashPassword, verifyPassword, setSessionCookie, clearSessionCookie } from "@/lib/auth";
 
-export type ActionState = { error?: string } | undefined;
+export type ActionState = { error?: string; success?: boolean } | undefined;
 
 export async function registerAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const name = String(formData.get("name") || "").trim();
