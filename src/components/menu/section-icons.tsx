@@ -1,16 +1,12 @@
 import type { SectionKey } from "@/lib/menu-sections";
 
-// آیکن‌های مشکیِ طاقی‌های صفحه‌ی اول، یک آیکن برای هر بخش منو.
 const INK = "#0c0c0c";
 
 function Breakfast() {
   return (
     <>
       <circle cx="24" cy="24" r="21" fill={INK} />
-      <path
-        d="M9.500 19.500c-.6-5 3.600-8.600 8.600-7.800 3 .5 5.400-.6 7.800.6 3.800 1.800 4.600 6.400 2.200 9.600-2 2.600-5.400 3.200-8.400 2.400-3-.8-4.800 1.200-7.800-.2-1.600-.8-2.200-2.800-2.400-4.600z"
-        fill="#fff"
-      />
+      <path d="M9.500 19.500c-.6-5 3.600-8.600 8.600-7.800 3 .5 5.400-.6 7.800.6 3.800 1.800 4.600 6.400 2.200 9.600-2 2.600-5.400 3.200-8.400 2.400-3-.8-4.800 1.200-7.800-.2-1.600-.8-2.200-2.800-2.400-4.600z" fill="#fff" />
       <circle cx="17.500" cy="19" r="4.200" fill={INK} />
       <circle cx="16.200" cy="17.600" r="1.200" fill="#fff" />
       <g transform="rotate(-28 31 32)">
@@ -68,13 +64,7 @@ function Cafe() {
   );
 }
 
-const ICONS: Record<SectionKey, () => React.JSX.Element> = {
-  breakfast: Breakfast,
-  lunch: Lunch,
-  dinner: Dinner,
-  appetizer: Appetizer,
-  cafe: Cafe,
-};
+const ICONS: Record<SectionKey, () => React.JSX.Element> = { breakfast: Breakfast, lunch: Lunch, dinner: Dinner, appetizer: Appetizer, cafe: Cafe };
 
 export function SectionIcon({ section, className }: { section: SectionKey; className?: string }) {
   const Icon = ICONS[section];

@@ -4,19 +4,12 @@ import { connectDB } from "@/lib/db";
 import { Dish } from "@/lib/models/Dish";
 import { EditDishForm } from "./edit-dish-form";
 
-export default async function EditDishPage({
-  params,
-}: {
-  params: Promise<{ dishId: string }>;
-}) {
+export default async function EditDishPage({ params }: { params: Promise<{ dishId: string }> }) {
   const { dishId } = await params;
   const session = await getSession();
   await connectDB();
 
-  const dish = await Dish.findOne({
-    _id: dishId,
-    restaurantId: session!.restaurantId,
-  }).lean();
+  const dish = await Dish.findOne({ _id: dishId, restaurantId: session!.restaurantId }).lean();
   if (!dish) notFound();
 
   return (

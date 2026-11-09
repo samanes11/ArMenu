@@ -1,6 +1,4 @@
-// اجرا:
-//   $env:PEXELS_KEY="کلید"; node fill-thumbnails.mjs esamtest_dishes.filled.json esamtest_dishes.filled.json
-// (ورودی و خروجی می‌تواند یک فایل باشد؛ غذاهایی که عکس دارند رد می‌شوند، پس هر چند بار اجرا کنی ادامه می‌دهد.)
+// Usage: PEXELS_KEY=key node fill-thumbnails.mjs dishes.json [out.json]
 import { readFileSync, writeFileSync } from "node:fs";
 
 const [input = "esamtest_dishes.json", output = input] = process.argv.slice(2);
@@ -19,19 +17,15 @@ async function fetchRetry(url, opts = {}) {
     if (!wait && reset) wait = Math.max(0, reset * 1000 - Date.now()) + 2000;
     if (!wait) wait = 30000 * attempt;
     wait = Math.min(wait, 3700000);
-    console.log(`\n429 - صبر ${Math.round(wait / 1000)} ثانیه...`);
+    console.log(`\n429 - waiting ${Math.round(wait / 1000)}s...`);
     await sleep(wait);
   }
   throw new Error("rate limited");
 }
 
 async function pexels(q) {
-  const r = await fetchRetry(
-    `https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}&per_page=1&orientation=landscape`,
-    { headers: { Authorization: KEY } }
-  );
-  const j = await r.json();
-  return j.photos?.[0]?.src?.medium || null;
+  const r = await fetchRetry(`https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}&per_page=1&orientation=landscape`, { headers: { Authorization: KEY } });
+  return (await r.json()).photos?.[0]?.src?.medium || null;
 }
 
 async function commons(q) {
@@ -41,13 +35,11 @@ async function commons(q) {
   const r = await fetchRetry(u, { headers: { "User-Agent": "dishar-thumb-filler/1.1 (personal project)" } });
   const j = await r.json();
   const pages = Object.values(j.query?.pages || {}).sort((a, b) => a.index - b.index);
-  const hit = pages.find((p) => p.imageinfo?.[0]?.mime === "image/jpeg");
-  return hit?.imageinfo[0].thumburl || null;
+  return pages.find((p) => p.imageinfo?.[0]?.mime === "image/jpeg")?.imageinfo[0].thumburl || null;
 }
 
 async function find(name) {
-  const queries = [`${name} food`, name];
-  for (const q of queries) {
+  for (const q of [`${name} food`, name]) {
     const url = KEY ? await pexels(q) : await commons(q);
     await sleep(KEY ? 400 : 2500);
     if (url) return url;

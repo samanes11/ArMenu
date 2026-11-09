@@ -8,14 +8,10 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    serverActions: {
-      bodySizeLimit: "50mb",
-    },
+    optimizePackageImports: ["lucide-react", "motion/react"],
+    serverActions: { bodySizeLimit: "50mb" },
     middlewareClientMaxBodySize: "50mb",
-    staleTimes: {
-    dynamic: 900, 
-    static: 900,
-  },
+    staleTimes: { dynamic: 900, static: 900 },
   },
 };
 

@@ -1,140 +1,67 @@
-@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================================
-   Design tokens
-   ============================================================ */
 :root {
-  --font-vazir: "Vazirmatn", Tahoma, sans-serif;
---font-en: "Space Grotesk", ui-sans-serif, sans-serif;
-
-  /* Brand (صفحه‌ی خوش‌آمدگویی پیش از ساخت حساب) */
   --brand-50: #fff7ed;
   --brand-100: #ffedd5;
   --brand-500: #f97316;
   --brand-600: #ea580c;
   --brand-700: #c2410c;
 
-  /* رنگ تاکیدی (طلایی) و طیف آن — مقادیر پیش‌فرض؛ روی <html> با رنگ
-     انتخابی صاحب رستوران (src/lib/theme.ts) بازنویسی می‌شوند. */
   --gold-100: #f6e7a6;
   --gold-300: #ecd067;
   --gold-400: #e2bc3e;
   --gold-500: #c9a227;
   --gold-700: #8a6c18;
 
-  /* سطوح منوی عمومی و پنل مدیریت */
   --menu-teal: #1f4a43;
   --menu-card: #2a2a2a;
   --menu-line: #333333;
   --menu-muted: #9b9b9b;
 
-  /* پس‌زمینه‌ی تیره‌ی کل سایت */
   --bg-top: #12261a;
   --bg-mid: #1a3a24;
   --bg-bottom: #163220;
 
-  /* گرادیان طاقی‌های صفحه‌ی اول — از رنگ تاکیدی ساخته می‌شود */
   --arch-top: #f3e08a;
   --arch-mid: #e5c455;
   --arch-bottom: #d6ae35;
   --arch-border: #bf9a2a;
 
-  /* Materials — translucent layers, light catching their top/leading edge */
-  --material-regular-bg: rgba(255, 255, 255, 0.72);
-  --material-regular-border: rgba(255, 255, 255, 0.5);
-  --material-thick-bg: rgba(255, 255, 255, 0.88);
+  /* shadcn tokens derived from the theme above */
+  --card: color-mix(in srgb, var(--bg-top) 55%, black 45%);
+  --input: color-mix(in srgb, var(--menu-line) 85%, white 15%);
+  --accent-soft: color-mix(in srgb, var(--gold-400) 10%, transparent);
+
   --material-chip-bg: rgba(20, 20, 18, 0.55);
   --material-chip-border: rgba(255, 255, 255, 0.18);
-  --material-blur: 20px;
 
-  /* Spring-shaped easing curves (visual approximation of critically-damped
-     and slightly-bouncy springs) for CSS-only entrances where JS springs
-     would be overkill. */
-  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1); /* damping ~1.0, snappy settle */
-  --ease-spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* damping ~0.8 */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html, body {
-  font-family: var(--font-vazir);
-  -webkit-tap-highlight-color: transparent;
+@layer base {
+  * { @apply border-border; }
+  html, body {
+    font-family: var(--font-vazir), Tahoma, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  [dir="ltr"] {
+    font-family: var(--font-en), var(--font-vazir), sans-serif;
+    letter-spacing: -0.01em;
+  }
+  input, textarea, select, button { font-family: inherit; }
 }
 
-[dir="ltr"] {
-  font-family: var(--font-en), var(--font-vazir);
-  letter-spacing: -0.01em;
-}
+.text-display { font-size: clamp(1.75rem, 4vw + 1rem, 2.75rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; }
+.text-title { font-size: clamp(1.25rem, 1.5vw + 1rem, 1.625rem); line-height: 1.25; letter-spacing: -0.01em; font-weight: 700; }
+.text-headline { font-size: 1.0625rem; line-height: 1.4; letter-spacing: -0.005em; font-weight: 600; }
+.text-body { font-size: 0.9375rem; line-height: 1.65; font-weight: 400; }
+.text-caption { font-size: 0.8125rem; line-height: 1.55; letter-spacing: 0.005em; font-weight: 400; }
+.text-footnote { font-size: 0.75rem; line-height: 1.5; letter-spacing: 0.01em; font-weight: 500; }
 
-input, textarea, select, button {
-  font-family: var(--font-vazir);
-}
-
-/* ============================================================
-   Typography scale — optical sizing: tracking tightens as size
-   grows, leading loosens as size shrinks. Never one fixed value.
-   ============================================================ */
-.text-display {
-  font-size: clamp(1.75rem, 4vw + 1rem, 2.75rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-weight: 800;
-}
-
-.text-title {
-  font-size: clamp(1.25rem, 1.5vw + 1rem, 1.625rem);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  font-weight: 700;
-}
-
-.text-headline {
-  font-size: 1.0625rem;
-  line-height: 1.4;
-  letter-spacing: -0.005em;
-  font-weight: 600;
-}
-
-.text-body {
-  font-size: 0.9375rem;
-  line-height: 1.65;
-  letter-spacing: 0;
-  font-weight: 400;
-}
-
-.text-caption {
-  font-size: 0.8125rem;
-  line-height: 1.55;
-  letter-spacing: 0.005em;
-  font-weight: 400;
-}
-
-.text-footnote {
-  font-size: 0.75rem;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-  font-weight: 500;
-}
-
-/* ============================================================
-   Materials — translucent chrome; content scrolls underneath.
-   ============================================================ */
-.material-regular {
-  background: var(--material-regular-bg);
-  backdrop-filter: blur(var(--material-blur)) saturate(180%);
-  -webkit-backdrop-filter: blur(var(--material-blur)) saturate(180%);
-}
-
-.material-thick {
-  background: var(--material-thick-bg);
-  backdrop-filter: blur(calc(var(--material-blur) * 1.4)) saturate(180%);
-  -webkit-backdrop-filter: blur(calc(var(--material-blur) * 1.4)) saturate(180%);
-}
-
-/* a dark, floating chip — e.g. a back button over a photo/3D viewer */
 .material-chip {
   background: var(--material-chip-bg);
   border: 1px solid var(--material-chip-border);
@@ -143,156 +70,53 @@ input, textarea, select, button {
   color: white;
 }
 
-/* scroll-edge fade instead of a hard 1px divider under floating chrome */
-.scroll-edge-mask {
-  mask-image: linear-gradient(to bottom, transparent, black 14px);
-}
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* نوار اسکرول افقی کارت‌های غذا: بدون اسکرول‌بار دیداری */
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+.pressable { transition: transform 100ms var(--ease-standard), opacity 100ms var(--ease-standard); touch-action: manipulation; }
+.pressable:active { transform: scale(0.97); opacity: 0.92; }
+.pressable-subtle:active { transform: scale(0.985); }
 
-/* ============================================================
-   Press feedback — respond on pointer-down, not on release.
-   ============================================================ */
-.pressable {
-  transition: transform 100ms var(--ease-standard), opacity 100ms var(--ease-standard);
-  touch-action: manipulation;
-}
-.pressable:active {
-  transform: scale(0.97);
-  opacity: 0.92;
-}
-
-.pressable-subtle:active {
-  transform: scale(0.985);
-}
-
-/* ============================================================
-   Materialize — surfaces arrive as real material (blur+scale),
-   not a plain opacity fade. Staggered via inline --delay.
-   ============================================================ */
 @keyframes materialize {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
+  from { opacity: 0; transform: translateY(10px) scale(0.98); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
-
-.materialize {
-  animation: materialize 520ms var(--ease-spring) both;
-  animation-delay: var(--delay, 0ms);
-}
+.materialize { animation: materialize 520ms var(--ease-spring) both; animation-delay: var(--delay, 0ms); }
 
 @keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-.rise-in {
-  animation: rise-in 420ms var(--ease-spring) both;
-  animation-delay: var(--delay, 0ms);
-}
+.rise-in { animation: rise-in 420ms var(--ease-spring) both; animation-delay: var(--delay, 0ms); }
 
 @keyframes drop-in {
-  from {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
+.drop-in { animation: drop-in 600ms var(--ease-spring) both; animation-delay: var(--delay, 0ms); }
 
-.drop-in {
-  animation: drop-in 600ms var(--ease-spring) both;
-  animation-delay: var(--delay, 0ms);
-}
-
-/* a tiny bit of overshoot — only for things a gesture just "threw" */
 @keyframes pop-in {
   0% { opacity: 0; transform: scale(0.85); }
   100% { opacity: 1; transform: scale(1); }
 }
-.pop-in {
-  animation: pop-in 420ms var(--ease-spring-bounce) both;
-  animation-delay: var(--delay, 0ms);
-}
+.pop-in { animation: pop-in 420ms var(--ease-spring-bounce) both; animation-delay: var(--delay, 0ms); }
 
-/* ============================================================
-   Accessibility — reduced motion / transparency / contrast.
-   Never *remove* feedback, just make it gentler.
-   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .materialize, .rise-in, .pop-in, .drop-in {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
-  .pressable:active {
-    transform: none;
-  }
-  * {
-    scroll-behavior: auto !important;
-  }
+  .materialize, .rise-in, .pop-in, .drop-in { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+  .pressable:active { transform: none; }
+  * { scroll-behavior: auto !important; }
+  .menu-arch { transition: none; }
+  a:hover > .menu-arch, a:active > .menu-arch { transform: none; }
+  .skeleton { animation: none; background-image: none; }
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .material-regular, .material-thick {
-    background: #ffffff;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .material-chip {
-    background: rgba(20, 20, 18, 0.92);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
+  .material-chip { background: rgba(20, 20, 18, 0.92); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 
-@media (prefers-contrast: more) {
-  .material-regular, .material-thick {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.35);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
+html:has(.menu-theme), body:has(.menu-theme) { background: #000; }
+.menu-theme { background: #000; color: #fff; }
 
-/* ============================================================
-   منوی عمومی (تیره/طلایی)
-   ============================================================ */
-html:has(.menu-theme),
-body:has(.menu-theme) {
-  background: #000;
-}
-
-.menu-theme {
-  background: #000;
-  color: #fff;
-}
-
-/* بافت تیره‌ی صفحه‌ی اول: گرادیان رنگی (قابل‌تنظیم) + لکه‌های نرم + نویز خاکستری‌ِ خنثی
-   نویز به‌عمد بی‌رنگ است تا با هر رنگ پس‌زمینه‌ای که صاحب رستوران انتخاب کند هماهنگ بماند. */
 .menu-green {
   background-color: var(--bg-top);
   background-image:
@@ -303,7 +127,6 @@ body:has(.menu-theme) {
   transition: background-color 400ms var(--ease-standard);
 }
 
-/* لوگوی متنی طلایی (وقتی تصویر لوگو آپلود نشده) */
 .logo-gold {
   background: linear-gradient(180deg, var(--arch-top) 0%, var(--gold-400) 55%, var(--gold-700) 100%);
   -webkit-background-clip: text;
@@ -312,156 +135,26 @@ body:has(.menu-theme) {
   -webkit-text-fill-color: transparent;
 }
 
-/* طاقی‌های صفحه‌ی اول */
 .menu-arch {
   background: linear-gradient(180deg, var(--arch-top) 0%, var(--arch-mid) 58%, var(--arch-bottom) 100%);
   box-shadow: inset 0 0 0 2px var(--arch-border), 0 10px 24px -12px rgba(0, 0, 0, 0.8);
   transition: transform 160ms var(--ease-spring), filter 160ms var(--ease-standard), background 400ms var(--ease-standard);
 }
-a:hover > .menu-arch,
-a:focus-visible > .menu-arch {
-  transform: translateY(-4px);
-  filter: brightness(1.06);
-}
-a:active > .menu-arch {
-  transform: scale(0.96);
-}
+a:hover > .menu-arch, a:focus-visible > .menu-arch { transform: translateY(-4px); filter: brightness(1.06); }
+a:active > .menu-arch { transform: scale(0.96); }
 
-@media (prefers-reduced-motion: reduce) {
-  .menu-arch {
-    transition: none;
-  }
-  a:hover > .menu-arch,
-  a:active > .menu-arch {
-    transform: none;
-  }
-}
-
-/* ============================================================
-   پنل مدیریت و صفحات ورود/ثبت‌نام (همان تم تیره/طلایی منو)
-   ============================================================ */
-.admin-card {
-  background: color-mix(in srgb, var(--bg-top) 55%, black 45%);
-  border: 1px solid color-mix(in srgb, var(--menu-line) 70%, transparent);
-  border-radius: 1rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.9);
-  transition: background 400ms var(--ease-standard), border-color 400ms var(--ease-standard);
-}
-
-.admin-label {
-  display: block;
-  color: color-mix(in srgb, var(--menu-muted) 85%, white 15%);
-  font-size: 0.8125rem;
-  line-height: 1.55;
-}
-
-.admin-input {
-  width: 100%;
-  border-radius: 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--menu-line) 85%, white 15%);
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  padding: 0.55rem 0.75rem;
-  font-size: 0.875rem;
-  outline: none;
-  color-scheme: dark;
-  transition: border-color 150ms var(--ease-standard), box-shadow 150ms var(--ease-standard);
-}
-.admin-input::placeholder {
-  color: color-mix(in srgb, var(--menu-muted) 80%, black 20%);
-}
-.admin-input:focus {
-  border-color: var(--gold-400);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold-400) 22%, transparent);
-}
-.admin-input option,
-.admin-input optgroup {
-  background: #101712;
-  color: #fff;
-}
-
-.admin-file {
-  width: 100%;
-  font-size: 0.8125rem;
-  color: color-mix(in srgb, var(--menu-muted) 85%, white 15%);
-  color-scheme: dark;
-}
-.admin-file::file-selector-button {
-  margin-inline-end: 0.75rem;
-  border: 1px solid var(--gold-500);
-  border-radius: 0.5rem;
-  background: transparent;
-  color: var(--gold-400);
-  padding: 0.3rem 0.75rem;
-  font-family: var(--font-vazir);
-  cursor: pointer;
-}
-
-/* نمونه‌ی رنگ (کنار هر انتخاب‌گر رنگ در تب «ظاهر و رنگ‌بندی») */
-.admin-color-row {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-.admin-color-swatch {
-  inline-size: 2.75rem;
-  block-size: 2.75rem;
-  flex-shrink: 0;
-  border-radius: 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--menu-line) 85%, white 15%);
-  padding: 0;
-  background: none;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-}
-.admin-color-swatch::-webkit-color-swatch-wrapper {
-  padding: 3px;
-}
-.admin-color-swatch::-webkit-color-swatch {
-  border-radius: 0.45rem;
-  border: none;
-}
-
-.admin-error {
-  border-radius: 0.65rem;
-  background: rgba(127, 29, 29, 0.55);
-  color: #fecaca;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
-}
-
-/* ============================================================
-   اسکلتون لودینگ — شیمر نرم با رنگ‌های همین تم
-   ============================================================ */
 @keyframes skeleton-shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
-
 .skeleton {
   position: relative;
   overflow: hidden;
   border-radius: 0.65rem;
   background-color: color-mix(in srgb, var(--menu-line) 55%, black 10%);
-  background-image: linear-gradient(
-    100deg,
-    transparent 30%,
-    color-mix(in srgb, var(--gold-400) 18%, transparent) 50%,
-    transparent 70%
-  );
+  background-image: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--gold-400) 18%, transparent) 50%, transparent 70%);
   background-size: 250% 100%;
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .skeleton {
-    animation: none;
-    background-image: none;
-  }
 }
 
 @media print {
@@ -471,32 +164,11 @@ a:active > .menu-arch {
   .print-sheet, .print-sheet * { color: #000 !important; animation: none !important; filter: none !important; }
 }
 
-/* خط تزئینی زیر عنوان دسته */
-.cat-divider {
-  direction: ltr;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.cat-divider::before,
-.cat-divider::after {
-  content: "";
-  width: 46px;
-  height: 1px;
-}
-.cat-divider::before {
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.95));
-}
-.cat-divider::after {
-  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.95));
-}
-.cat-divider-dot {
-  width: 6px;
-  height: 6px;
-  transform: rotate(45deg);
-  background: var(--gold-400);
-}
+.cat-divider { direction: ltr; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.cat-divider::before, .cat-divider::after { content: ""; width: 46px; height: 1px; }
+.cat-divider::before { background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.95)); }
+.cat-divider::after { background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.95)); }
+.cat-divider-dot { width: 6px; height: 6px; transform: rotate(45deg); background: var(--gold-400); }
 
 .cat-active-box {
   background: color-mix(in srgb, var(--gold-400) 14%, transparent);

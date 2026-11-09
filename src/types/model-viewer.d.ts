@@ -1,4 +1,3 @@
-// اعلان تایپ برای وب‌کامپوننت <model-viewer> که از طریق تگ <script> لود می‌شود
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
 
 declare global {
@@ -11,9 +10,14 @@ declare global {
           alt?: string;
           ar?: boolean;
           "ar-modes"?: string;
+          "ar-scale"?: string;
+          "ar-placement"?: string;
           "camera-controls"?: boolean;
           "auto-rotate"?: boolean;
+          "rotation-per-second"?: string;
           "shadow-intensity"?: string;
+          "environment-image"?: string;
+          "interaction-prompt"?: string;
           exposure?: string;
           poster?: string;
         },

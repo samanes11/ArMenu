@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/button";
+import { Button } from "@/components/ui/button";
 import { BottomSheet } from "@/components/menu/bottom-sheet";
 import { DishForm } from "./dish-form";
 
@@ -13,11 +13,7 @@ export function AddDishButton() {
       <Button onClick={() => setOpen(true)}>
         <Plus size={16} /> غذای جدید
       </Button>
-      <BottomSheet
-        open={open}
-        onClose={() => setOpen(false)}
-        ariaLabel="افزودن غذای جدید"
-      >
+      <BottomSheet open={open} onClose={() => setOpen(false)} ariaLabel="افزودن غذای جدید">
         <div className="p-4 pb-8">
           <DishForm onDone={() => setOpen(false)} />
         </div>

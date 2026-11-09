@@ -4,23 +4,12 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "motion/react";
-import { CategoryIcon, CategoryIconKey } from "./category-icons";
+import { cn } from "@/lib/utils";
+import { CategoryIcon, type CategoryIconKey } from "./category-icons";
 
-export type SidebarCategory = {
-  label: string;
-  labelEn: string;
-  icon: CategoryIconKey;
-};
+export type SidebarCategory = { label: string; labelEn: string; icon: CategoryIconKey };
 
-// نوار کناری ثابت (سمت چپ صفحه) با دایره‌ی تصویر هر دسته. چون در layout قرار دارد
-// هنگام جابه‌جایی بین دسته‌ها دوباره ساخته نمی‌شود و جای اسکرولش حفظ می‌شود.
-export function CategorySidebar({
-  sectionKey,
-  categories,
-}: {
-  sectionKey: string;
-  categories: SidebarCategory[];
-}) {
+export function CategorySidebar({ sectionKey, categories }: { sectionKey: string; categories: SidebarCategory[] }) {
   const params = useParams<{ category?: string }>();
   const active = params.category ? decodeURIComponent(params.category) : "";
   const activeRef = useRef<HTMLAnchorElement | null>(null);
@@ -56,25 +45,17 @@ export function CategorySidebar({
                 <motion.span
                   animate={{ scale: isActive ? 1.08 : 1 }}
                   transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                  className={`relative flex h-[42px] w-[42px] min-[400px]:h-[50px] min-[400px]:w-[50px] items-center justify-center overflow-hidden rounded-full text-[22px] ${
-                    isActive
-                      ? "border border-gold-400 bg-black/60"
-                      : "bg-black/35"
-                  }`}
+                  className={cn(
+                    "relative flex h-[42px] w-[42px] min-[400px]:h-[50px] min-[400px]:w-[50px] items-center justify-center overflow-hidden rounded-full",
+                    isActive ? "border border-gold-400 bg-black/60" : "bg-black/35"
+                  )}
                 >
-                  <CategoryIcon
-                    icon={category.icon}
-                    className="h-[26px] w-[26px] text-gold-400"
-                  />
+                  <CategoryIcon icon={category.icon} className="h-[26px] w-[26px] text-gold-400" />
                 </motion.span>
-                <span
-                  className={`relative mt-2 text-[13px] leading-5 min-[400px]:text-[15px] min-[400px]:leading-6 ${isActive ? "font-bold text-gold-400" : "text-white"}`}
-                >
+                <span className={cn("relative mt-2 text-[13px] leading-5 min-[400px]:text-[15px] min-[400px]:leading-6", isActive ? "font-bold text-gold-400" : "text-white")}>
                   {category.label}
                 </span>
-                <span className="relative hidden min-[400px]:block min-h-5 text-[14px] leading-5 text-white/70">
-                  {category.labelEn}
-                </span>
+                <span className="relative hidden min-h-5 text-[14px] leading-5 text-white/70 min-[400px]:block">{category.labelEn}</span>
               </Link>
             </li>
           );

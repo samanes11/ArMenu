@@ -4,9 +4,9 @@ const dishSchema = new Schema(
   {
     restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant", required: true, index: true },
     name: { type: String, required: true, trim: true },
-    nameEn: { type: String, default: "", trim: true }, // نام انگلیسی (اختیاری)، زیر نام فارسی نمایش داده می‌شود
+    nameEn: { type: String, default: "", trim: true },
     description: { type: String, default: "" },
-    price: { type: Number, required: true, min: 0 }, // به تومان
+    price: { type: Number, required: true, min: 0 },
     category: { type: String, default: "سایر" },
     thumbnailUrl: { type: String, default: "" },
     modelUrlGlb: { type: String, default: "" },
@@ -19,5 +19,4 @@ const dishSchema = new Schema(
 
 export type DishDoc = InferSchemaType<typeof dishSchema> & { _id: mongoose.Types.ObjectId };
 
-export const Dish: Model<DishDoc> =
-  (mongoose.models.Dish as Model<DishDoc>) || mongoose.model<DishDoc>("Dish", dishSchema);
+export const Dish: Model<DishDoc> = (mongoose.models.Dish as Model<DishDoc>) || mongoose.model<DishDoc>("Dish", dishSchema);

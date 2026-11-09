@@ -1,19 +1,8 @@
-
 import type { CategoryIconKey } from "@/components/menu/category-icons";
 
 export type SectionKey = "breakfast" | "lunch" | "dinner" | "appetizer" | "cafe";
-
-export type MenuCategory = {
-  label: string;
-  labelEn: string;
-  icon: CategoryIconKey;
-};
-
-export type MenuSectionDef = {
-  key: SectionKey;
-  label: string;
-  categories: MenuCategory[];
-};
+export type MenuCategory = { label: string; labelEn: string; icon: CategoryIconKey };
+export type MenuSectionDef = { key: SectionKey; label: string; categories: MenuCategory[] };
 
 export const MENU_SECTIONS: MenuSectionDef[] = [
   {
@@ -69,13 +58,8 @@ export const MENU_SECTIONS: MenuSectionDef[] = [
   },
 ];
 
-export function getSection(key: string): MenuSectionDef | undefined {
-  return MENU_SECTIONS.find((s) => s.key === key);
-}
-
-export function getCategory(sectionKey: string, categoryLabel: string): MenuCategory | undefined {
-  return getSection(sectionKey)?.categories.find((c) => c.label === categoryLabel);
-}
+export const getSection = (key: string) => MENU_SECTIONS.find((s) => s.key === key);
+export const getCategory = (sectionKey: string, label: string) => getSection(sectionKey)?.categories.find((c) => c.label === label);
 
 export function findByCategory(categoryLabel: string) {
   for (const section of MENU_SECTIONS) {

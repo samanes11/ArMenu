@@ -1,3 +1,1 @@
-export function Skeleton({ className = "" }: { className?: string }) {
-  return <div aria-hidden="true" className={`skeleton ${className}`} />;
-}
+export { Skeleton } from "@/components/ui/skeleton";

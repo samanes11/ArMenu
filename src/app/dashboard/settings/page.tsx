@@ -12,12 +12,8 @@ export default async function SettingsPage() {
   if (!restaurant) return null;
 
   const theme = { ...DEFAULT_THEME } as ThemeColors;
-  for (const key of Object.keys(DEFAULT_THEME) as (keyof ThemeColors)[]) {
-    const value = (restaurant as unknown as Record<string, string | undefined>)[
-      key
-    ];
-    if (value) theme[key] = value;
-  }
+  const r = restaurant as unknown as Record<string, string | undefined>;
+  for (const key of Object.keys(DEFAULT_THEME) as (keyof ThemeColors)[]) if (r[key]) theme[key] = r[key]!;
 
   return (
     <div className="flex flex-wrap items-start gap-6">

@@ -2,10 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
+import { Button } from "@/components/ui/button";
 import { BottomSheet } from "./bottom-sheet";
-
-// «یادداشت»: لیست موقتی غذاهایی که مشتری انتخاب می‌کند تا هنگام سفارش به گارسون نشان دهد.
-// فقط در مرورگر خود مشتری (localStorage) نگه‌داری می‌شود و به سرور چیزی ارسال نمی‌شود.
 
 export type NoteItem = { id: string; name: string; price: number; qty: number };
 
@@ -37,9 +35,7 @@ export function NoteProvider({ unit, children }: { unit: string; children: React
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setItems(JSON.parse(raw));
-    } catch {
-      // حافظه‌ی مرورگر در دسترس نیست؛ یادداشت فقط تا بستن صفحه می‌ماند
-    }
+    } catch {}
     setLoaded(true);
   }, []);
 
@@ -47,17 +43,13 @@ export function NoteProvider({ unit, children }: { unit: string; children: React
     if (!loaded) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    } catch {
-      // ignore
-    }
+    } catch {}
   }, [items, loaded]);
 
   const add = useCallback((item: Omit<NoteItem, "qty">) => {
-    setItems((prev) => {
-      const found = prev.find((i) => i.id === item.id);
-      if (found) return prev.map((i) => (i.id === item.id ? { ...i, qty: i.qty + 1 } : i));
-      return [...prev, { ...item, qty: 1 }];
-    });
+    setItems((prev) =>
+      prev.some((i) => i.id === item.id) ? prev.map((i) => (i.id === item.id ? { ...i, qty: i.qty + 1 } : i)) : [...prev, { ...item, qty: 1 }]
+    );
   }, []);
 
   const decrease = useCallback((id: string) => {
@@ -85,7 +77,6 @@ export function NoteProvider({ unit, children }: { unit: string; children: React
 
 const fa = (n: number) => n.toLocaleString("fa-IR");
 
-// دکمه‌ی شناور «یادداشت من» + برگه‌ی پایین‌صفحه که لیست و جمع کل را نشان می‌دهد
 export function NoteBar() {
   const { items, count, total, unit, add, decrease, clear } = useNote();
   const [open, setOpen] = useState(false);
@@ -98,16 +89,13 @@ export function NoteBar() {
 
   return (
     <>
-      <button
-        type="button"
+      <Button
         onClick={() => setOpen(true)}
-        className="pressable fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-[14px] font-bold text-black shadow-[0_10px_30px_-8px_rgba(0,0,0,0.9)]"
+        className="fixed bottom-5 left-1/2 z-40 -translate-x-1/2 rounded-full px-5 py-3 text-[14px] shadow-[0_10px_30px_-8px_rgba(0,0,0,0.9)]"
       >
-        <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-black px-1.5 text-[12px] font-bold text-gold-400">
-          {fa(count)}
-        </span>
+        <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-black px-1.5 text-[12px] font-bold text-gold-400">{fa(count)}</span>
         یادداشت من
-      </button>
+      </Button>
 
       <BottomSheet open={open} onClose={() => setOpen(false)} ariaLabel="یادداشت من">
         <div className="p-5 pb-8">
@@ -124,19 +112,13 @@ export function NoteBar() {
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[15px] text-white">{item.name}</p>
                   <p className="text-[13px] text-menu-muted">
-                    <span dir="ltr" className="inline-block">
-                      {formatPrice(item.price, unit, true)}
-                    </span>
+                    <span dir="ltr" className="inline-block">{formatPrice(item.price, unit, true)}</span>
                   </p>
                 </div>
                 <div className="flex items-center gap-1 rounded-full border border-menu-line">
-                  <button type="button" aria-label="افزودن" onClick={() => add(item)} className="pressable h-8 w-8 text-[18px] text-gold-400">
-                    +
-                  </button>
+                  <Button variant="ghost" size="icon" aria-label="افزودن" onClick={() => add(item)} className="rounded-full text-[18px] text-gold-400">+</Button>
                   <span className="w-5 text-center text-[14px]">{fa(item.qty)}</span>
-                  <button type="button" aria-label="کم کردن" onClick={() => decrease(item.id)} className="pressable h-8 w-8 text-[18px] text-gold-400">
-                    −
-                  </button>
+                  <Button variant="ghost" size="icon" aria-label="کم کردن" onClick={() => decrease(item.id)} className="rounded-full text-[18px] text-gold-400">−</Button>
                 </div>
               </li>
             ))}
@@ -144,9 +126,7 @@ export function NoteBar() {
 
           <div className="mt-4 flex items-center justify-between border-t border-menu-line pt-4 text-[16px]">
             <span>جمع کل</span>
-            <span dir="ltr" className="font-bold text-gold-400">
-              {formatPrice(total, unit, true)}
-            </span>
+            <span dir="ltr" className="font-bold text-gold-400">{formatPrice(total, unit, true)}</span>
           </div>
         </div>
       </BottomSheet>

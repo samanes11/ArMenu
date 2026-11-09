@@ -9,6 +9,7 @@ export default async function DashboardPage() {
   await connectDB();
 
   const dishes = await Dish.find({ restaurantId: session!.restaurantId })
+    .select("name nameEn description price category thumbnailUrl available")
     .sort({ order: 1, createdAt: -1 })
     .lean();
 
@@ -24,16 +25,12 @@ export default async function DashboardPage() {
   }));
 
   return (
-    <div className="space-y-8">
-      <section className="rise-in" style={{ ["--delay" as string]: "80ms" }}>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-title text-white">
-            منوی غذاها ({serialized.length})
-          </h2>
-          <AddDishButton />
-        </div>
-        <DishList dishes={serialized} />
-      </section>
-    </div>
+    <section className="rise-in space-y-4" style={{ ["--delay" as string]: "80ms" }}>
+      <div className="flex items-center justify-between">
+        <h2 className="text-title text-white">منوی غذاها ({serialized.length})</h2>
+        <AddDishButton />
+      </div>
+      <DishList dishes={serialized} />
+    </section>
   );
 }

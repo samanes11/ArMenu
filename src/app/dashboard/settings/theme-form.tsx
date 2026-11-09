@@ -3,55 +3,30 @@
 import { useActionState, useState } from "react";
 import { updateThemeAction } from "@/lib/actions/restaurant";
 import { THEME_FIELD_INFO, type ThemeColors } from "@/lib/theme";
-import { Button } from "@/components/button";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { FormError } from "@/components/form-bits";
 
-const FIELD_ORDER: (keyof ThemeColors)[] = [
-  "accentColor",
-  "bgTop",
-  "bgMid",
-  "bgBottom",
-  "sidebarBg",
-  "cardBg",
-  "lineColor",
-  "mutedText",
-];
+const FIELD_ORDER = Object.keys(THEME_FIELD_INFO) as (keyof ThemeColors)[];
 
-// یک ردیف رنگ: برچسب + توضیح کامل + انتخاب‌گر رنگ (چرخ‌دنده‌ی رنگ مرورگر) +
-// فیلد متنی هگز برای وارد کردن دقیق کد رنگ. هر دو با هم هماهنگ می‌مانند.
-function ColorField({
-  name,
-  label,
-  description,
-  defaultValue,
-}: {
-  name: string;
-  label: string;
-  description: string;
-  defaultValue: string;
-}) {
+function ColorField({ name, label, description, defaultValue }: { name: string; label: string; description: string; defaultValue: string }) {
   const [value, setValue] = useState(defaultValue);
 
   return (
     <div className="space-y-1.5">
-      <label className="admin-label font-medium text-white/90">{label}</label>
+      <Label className="font-medium text-white/90">{label}</Label>
       <p className="text-footnote text-white/45">{description}</p>
-      <div className="admin-color-row">
+      <div className="flex items-center gap-2.5">
         <input
           type="color"
           aria-label={`${label} — انتخاب‌گر رنگ`}
-          className="admin-color-swatch"
+          className="h-11 w-11 shrink-0 cursor-pointer appearance-none rounded-md border border-input bg-transparent p-[3px] [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <input
-          type="text"
-          name={name}
-          dir="ltr"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          pattern="^#[0-9a-fA-F]{6}$"
-          className="admin-input"
-        />
+        <Input name={name} dir="ltr" value={value} onChange={(e) => setValue(e.target.value)} pattern="^#[0-9a-fA-F]{6}$" />
       </div>
     </div>
   );
@@ -61,45 +36,30 @@ export function ThemeForm({ theme }: { theme: ThemeColors }) {
   const [state, formAction, pending] = useActionState(updateThemeAction, undefined);
 
   return (
-    <form
-      action={formAction}
-      className="materialize admin-card max-w-md space-y-4 p-6"
-      style={{ ["--delay" as string]: "90ms" }}
-    >
-      <div>
-        <h1 className="text-title text-gold-400">ظاهر و رنگ‌بندی</h1>
-        <p className="text-footnote mt-1 text-white/45">
-          هر رنگی که در منوی عمومی، صفحات ورود/ثبت‌نام و همین پنل مدیریت دیده می‌شود از این چند رنگ ساخته
-          می‌شود. سایه‌های روشن‌تر و تیره‌تر لازم (مثل گرادیان طاقی‌های صفحه‌ی اول) به‌طور خودکار محاسبه می‌شوند.
-        </p>
-      </div>
+    <Card className="materialize w-full max-w-md p-6" style={{ ["--delay" as string]: "90ms" }}>
+      <form action={formAction} className="space-y-4">
+        <div>
+          <h1 className="text-title text-gold-400">ظاهر و رنگ‌بندی</h1>
+          <p className="text-footnote mt-1 text-white/45">
+            هر رنگی که در منوی عمومی، صفحات ورود/ثبت‌نام و همین پنل مدیریت دیده می‌شود از این چند رنگ ساخته می‌شود. سایه‌های روشن‌تر و تیره‌تر لازم (مثل گرادیان طاقی‌های صفحه‌ی اول) به‌طور خودکار محاسبه می‌شوند.
+          </p>
+        </div>
 
-      {state?.error !== undefined && state.error && <p className="admin-error">{state.error}</p>}
+        <FormError message={state?.error} />
 
-      {FIELD_ORDER.map((field) => (
-        <ColorField
-          key={field}
-          name={field}
-          label={THEME_FIELD_INFO[field].label}
-          description={THEME_FIELD_INFO[field].description}
-          defaultValue={theme[field]}
-        />
-      ))}
+        {FIELD_ORDER.map((field) => (
+          <ColorField key={field} name={field} label={THEME_FIELD_INFO[field].label} description={THEME_FIELD_INFO[field].description} defaultValue={theme[field]} />
+        ))}
 
-      <div className="flex items-center gap-3 pt-1">
-        <Button type="submit" disabled={pending} className="flex-1">
-          {pending ? "در حال ذخیره..." : "ذخیره‌ی رنگ‌بندی"}
-        </Button>
-        <button
-          type="submit"
-          name="resetTheme"
-          value="1"
-          disabled={pending}
-          className="pressable text-caption rounded-lg border border-menu-line px-3 py-2.5 font-medium text-white/70 hover:bg-white/5"
-        >
-          بازگردانی به پیش‌فرض
-        </button>
-      </div>
-    </form>
+        <div className="flex items-center gap-3 pt-1">
+          <Button type="submit" disabled={pending} className="flex-1">
+            {pending ? "در حال ذخیره..." : "ذخیره‌ی رنگ‌بندی"}
+          </Button>
+          <Button type="submit" name="resetTheme" value="1" variant="ghost" disabled={pending} className="border border-border py-2.5 text-[13px] text-white/70">
+            بازگردانی به پیش‌فرض
+          </Button>
+        </div>
+      </form>
+    </Card>
   );
 }

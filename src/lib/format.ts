@@ -1,4 +1,3 @@
-// نمایش قیمت به تومان با جداکننده‌ی هزارگان فارسی
 export function formatToman(amount: number) {
   return `${amount.toLocaleString("fa-IR")} تومان`;
 }

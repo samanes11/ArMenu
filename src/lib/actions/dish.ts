@@ -8,48 +8,33 @@ import { getSession } from "@/lib/auth";
 import { saveUploadedFile } from "@/lib/storage";
 import type { ActionState } from "@/lib/actions/auth";
 
-async function resolveAsset(
-  formData: FormData,
-  fileKey: string,
-  urlKey: string,
-  restaurantId: string,
-): Promise<string | null> {
+async function resolveAsset(formData: FormData, fileKey: string, urlKey: string, restaurantId: string): Promise<string | null> {
   const file = formData.get(fileKey) as File | null;
   if (file && file.size > 0) return saveUploadedFile(file, restaurantId);
   const url = String(formData.get(urlKey) || "").trim();
-  if (url && /^(https?:\/\/|\/)/i.test(url)) return url;
-  return null;
+  return url && /^(https?:\/\/|\/)/i.test(url) ? url : null;
 }
 
 async function requireRestaurant() {
   const session = await getSession();
   if (!session?.restaurantId) redirect("/login");
-  return session!.restaurantId as string;
+  return session.restaurantId as string;
 }
 
-export async function createDishAction(
-  _prev: ActionState,
-  formData: FormData,
-): Promise<ActionState> {
-  const restaurantId = await requireRestaurant();
+const INVALID = { error: "نام غذا و قیمت معتبر (به تومان) الزامی است." };
 
+export async function createDishAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const restaurantId = await requireRestaurant();
   const name = String(formData.get("name") || "").trim();
   const price = Number(formData.get("price") || 0);
-  if (!name || !Number.isFinite(price) || price < 0) {
-    return { error: "نام غذا و قیمت معتبر (به تومان) الزامی است." };
-  }
+  if (!name || !Number.isFinite(price) || price < 0) return INVALID;
 
   await connectDB();
-
-  const thumbnailUrl =
-    (await resolveAsset(formData, "thumbnail", "thumbnailUrl", restaurantId)) ??
-    "";
-  const modelUrlGlb =
-    (await resolveAsset(formData, "modelGlb", "modelUrlGlb", restaurantId)) ??
-    "";
-  const modelUrlUsdz =
-    (await resolveAsset(formData, "modelUsdz", "modelUrlUsdz", restaurantId)) ??
-    "";
+  const [thumbnailUrl, modelUrlGlb, modelUrlUsdz] = await Promise.all([
+    resolveAsset(formData, "thumbnail", "thumbnailUrl", restaurantId),
+    resolveAsset(formData, "modelGlb", "modelUrlGlb", restaurantId),
+    resolveAsset(formData, "modelUsdz", "modelUrlUsdz", restaurantId),
+  ]);
 
   await Dish.create({
     restaurantId,
@@ -58,53 +43,31 @@ export async function createDishAction(
     description: String(formData.get("description") || ""),
     price,
     category: String(formData.get("category") || "سایر"),
-    thumbnailUrl,
-    modelUrlGlb,
-    modelUrlUsdz,
+    thumbnailUrl: thumbnailUrl ?? "",
+    modelUrlGlb: modelUrlGlb ?? "",
+    modelUrlUsdz: modelUrlUsdz ?? "",
   });
 
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
 
-export async function updateDishAction(
-  _prev: ActionState,
-  formData: FormData,
-): Promise<ActionState> {
+export async function updateDishAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const restaurantId = await requireRestaurant();
-
   const dishId = String(formData.get("dishId") || "");
   const name = String(formData.get("name") || "").trim();
   const price = Number(formData.get("price") || 0);
-  if (!dishId || !name || !Number.isFinite(price) || price < 0) {
-    return { error: "نام غذا و قیمت معتبر (به تومان) الزامی است." };
-  }
+  if (!dishId || !name || !Number.isFinite(price) || price < 0) return INVALID;
 
   await connectDB();
-
   const dish = await Dish.findOne({ _id: dishId, restaurantId });
-  if (!dish) {
-    return { error: "غذا پیدا نشد." };
-  }
+  if (!dish) return { error: "غذا پیدا نشد." };
 
-  const t = await resolveAsset(
-    formData,
-    "thumbnail",
-    "thumbnailUrl",
-    restaurantId,
-  );
-  const g = await resolveAsset(
-    formData,
-    "modelGlb",
-    "modelUrlGlb",
-    restaurantId,
-  );
-  const u = await resolveAsset(
-    formData,
-    "modelUsdz",
-    "modelUrlUsdz",
-    restaurantId,
-  );
+  const [t, g, u] = await Promise.all([
+    resolveAsset(formData, "thumbnail", "thumbnailUrl", restaurantId),
+    resolveAsset(formData, "modelGlb", "modelUrlGlb", restaurantId),
+    resolveAsset(formData, "modelUsdz", "modelUrlUsdz", restaurantId),
+  ]);
   if (t !== null) dish.thumbnailUrl = t;
   if (g !== null) dish.modelUrlGlb = g;
   if (u !== null) dish.modelUrlUsdz = u;
@@ -114,7 +77,6 @@ export async function updateDishAction(
   dish.description = String(formData.get("description") || "");
   dish.price = price;
   dish.category = String(formData.get("category") || dish.category);
-
   await dish.save();
 
   revalidatePath("/dashboard");
@@ -124,10 +86,7 @@ export async function updateDishAction(
 export async function toggleDishAvailabilityAction(dishId: string) {
   const restaurantId = await requireRestaurant();
   await connectDB();
-  const dish = await Dish.findOne({ _id: dishId, restaurantId });
-  if (!dish) return;
-  dish.available = !dish.available;
-  await dish.save();
+  await Dish.updateOne({ _id: dishId, restaurantId }, [{ $set: { available: { $not: "$available" } } }]);
   revalidatePath("/dashboard");
 }
 

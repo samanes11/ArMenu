@@ -6,12 +6,10 @@ const restaurantSchema = new Schema(
     name: { type: String, required: true, trim: true },
     description: { type: String, default: "" },
     currency: { type: String, enum: ["TOMAN", "RIAL"], default: "TOMAN" },
-    phone: { type: String, default: "" }, // برای دکمه‌ی «اطلاعات تماس»
+    phone: { type: String, default: "" },
     address: { type: String, default: "" },
-    logoUrl: { type: String, default: "" }, // لوگوی رستوران؛ اگر خالی باشد نام رستوران به‌شکل لوگوی متنی نمایش داده می‌شود
-    themeColor: { type: String, default: "#ea580c" }, // رنگ برند صفحه‌ی خوش‌آمدگویی پیش از ساخت حساب (کمتر دیده می‌شود)
-
-    // رنگ‌بندی کامل منوی عمومی و پنل مدیریت؛ از پنل «تنظیمات ← ظاهر و رنگ‌بندی» قابل تغییر است
+    logoUrl: { type: String, default: "" },
+    themeColor: { type: String, default: "#ea580c" },
     accentColor: { type: String, default: "#e2bc3e" },
     bgTop: { type: String, default: "#12261a" },
     bgMid: { type: String, default: "#1a3a24" },
