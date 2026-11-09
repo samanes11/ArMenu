@@ -49,7 +49,7 @@ export async function createDishAction(_prev: ActionState, formData: FormData): 
   });
 
   revalidatePath("/dashboard");
-  redirect("/dashboard");
+  return { success: true };
 }
 
 export async function updateDishAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
