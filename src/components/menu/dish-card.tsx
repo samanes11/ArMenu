@@ -25,11 +25,11 @@ export function DishCard({ dish, href, unit }: { dish: DishCardData; href: strin
   return (
     <article
       className={cn(
-        "flex h-full flex-col overflow-hidden rounded-[14px] border bg-black transition-colors duration-200",
+        "flex h-full flex-col overflow-hidden rounded-[14px] border bg-[var(--menu-bg)] transition-colors duration-200",
         qty > 0 ? "border-gold-400" : "border-menu-line hover:border-gold-400 focus-within:border-gold-400"
       )}
     >
-      <Link href={href} className="relative block aspect-[7/6] bg-black" aria-label={dish.name}>
+      <Link href={href} className="relative block aspect-[7/6] bg-[var(--menu-bg)]" aria-label={dish.name}>
         {dish.thumbnailUrl ? (
           <Image src={dish.thumbnailUrl} alt={dish.name} fill sizes="(max-width: 640px) 45vw, 200px" className="object-cover" />
         ) : (
@@ -56,11 +56,11 @@ export function DishCard({ dish, href, unit }: { dish: DishCardData; href: strin
       </div>
 
       {qty === 0 ? (
-        <button type="button" onClick={() => add(item)} className="h-11 w-full border-t border-menu-line bg-black text-[14px] font-medium text-white transition-colors active:bg-white/10">
+        <button type="button" onClick={() => add(item)} className="h-11 w-full border-t border-menu-line bg-[var(--menu-bg)] text-[14px] font-medium text-white transition-colors active:bg-white/10">
           افزودن به یادداشت
         </button>
       ) : (
-        <div className="flex h-11 w-full items-center justify-between border-t border-gold-400 bg-black px-2">
+        <div className="flex h-11 w-full items-center justify-between border-t border-gold-400 bg-[var(--menu-bg)] px-2">
           <button type="button" aria-label="افزودن" onClick={() => add(item)} className="pressable h-9 w-9 text-[20px] text-gold-400">+</button>
           <span className="text-[14px] font-medium text-white">{qty.toLocaleString("fa-IR")}</span>
           <button type="button" aria-label="کم کردن" onClick={() => decrease(dish.id)} className="pressable h-9 w-9 text-[20px] text-gold-400">−</button>

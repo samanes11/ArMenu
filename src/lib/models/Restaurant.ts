@@ -18,6 +18,7 @@ const restaurantSchema = new Schema(
     cardBg: { type: String, default: "#2a2a2a" },
     lineColor: { type: String, default: "#333333" },
     mutedText: { type: String, default: "#9b9b9b" },
+    menuBg: { type: String, default: "#000000" },
   },
   { timestamps: true }
 );

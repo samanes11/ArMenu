@@ -6,7 +6,7 @@ export default function CategoryLoading() {
       <Skeleton className="mx-auto mt-10 h-10 w-48" />
       <div className="mx-auto mt-9 grid max-w-[620px] grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-7 lg:max-w-[860px] lg:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="overflow-hidden rounded-[14px] border border-menu-line bg-black">
+          <div key={i} className="overflow-hidden rounded-[14px] border border-menu-line bg-[var(--menu-bg)]">
             <Skeleton className="aspect-[7/6] w-full rounded-none" />
             <div className="space-y-2 bg-menu-card p-3">
               <Skeleton className="h-4 w-3/4" />

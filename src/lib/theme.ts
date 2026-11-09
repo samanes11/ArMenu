@@ -33,7 +33,10 @@ function hslToHex(h: number, s: number, l: number): string {
   else if (h < 240) [r, g, b] = [0, x, c];
   else if (h < 300) [r, g, b] = [x, 0, c];
   else [r, g, b] = [c, 0, x];
-  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, "0");
+  const toHex = (v: number) =>
+    Math.round((v + m) * 255)
+      .toString(16)
+      .padStart(2, "0");
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
@@ -44,6 +47,7 @@ export type ThemeColors = {
   accentColor: string;
   bgTop: string;
   bgMid: string;
+  menuBg: string;
   bgBottom: string;
   sidebarBg: string;
   cardBg: string;
@@ -55,6 +59,7 @@ export const DEFAULT_THEME: ThemeColors = {
   accentColor: "#e2bc3e",
   bgTop: "#12261a",
   bgMid: "#1a3a24",
+  menuBg: "#000000",
   bgBottom: "#163220",
   sidebarBg: "#1f4a43",
   cardBg: "#2a2a2a",
@@ -62,7 +67,10 @@ export const DEFAULT_THEME: ThemeColors = {
   mutedText: "#9b9b9b",
 };
 
-export const THEME_FIELD_INFO: Record<keyof ThemeColors, { label: string; description: string }> = {
+export const THEME_FIELD_INFO: Record<
+  keyof ThemeColors,
+  { label: string; description: string }
+> = {
   accentColor: {
     label: "رنگ تاکیدی (طلایی)",
     description:
@@ -70,54 +78,84 @@ export const THEME_FIELD_INFO: Record<keyof ThemeColors, { label: string; descri
   },
   bgTop: {
     label: "پس‌زمینه — بالا",
-    description: "بالاترین رنگ گرادیان تیره‌ای که پشت کل سایت (صفحه‌ی اول منو، صفحات ورود و ثبت‌نام، و پنل مدیریت) قرار دارد.",
+    description:
+      "بالاترین رنگ گرادیان تیره‌ای که پشت کل سایت (صفحه‌ی اول منو، صفحات ورود و ثبت‌نام، و پنل مدیریت) قرار دارد.",
   },
   bgMid: {
     label: "پس‌زمینه — میانی",
-    description: "رنگ میانی همان گرادیان پس‌زمینه؛ معمولاً روشن‌ترین نقطه‌ی بافت پشت صفحه.",
+    description:
+      "رنگ میانی همان گرادیان پس‌زمینه؛ معمولاً روشن‌ترین نقطه‌ی بافت پشت صفحه.",
   },
   bgBottom: {
     label: "پس‌زمینه — پایین",
-    description: "پایین‌ترین رنگ گرادیان پس‌زمینه؛ به سمت پایین صفحه محو می‌شود.",
+    description:
+      "پایین‌ترین رنگ گرادیان پس‌زمینه؛ به سمت پایین صفحه محو می‌شود.",
+  },
+  menuBg: {
+    label: "رنگ زمینه‌ی منو",
+    description: "رنگ پس‌زمینه‌ی صفحات دسته‌بندی و جزئیات غذا (پیش‌فرض مشکی).",
   },
   sidebarBg: {
     label: "رنگ نوار دسته‌بندی",
-    description: "پس‌زمینه‌ی نوار کناری ثابت (لیست دسته‌ها در صفحات منو) و دکمه‌ی «بازگشت» بالای هر دسته.",
+    description:
+      "پس‌زمینه‌ی نوار کناری ثابت (لیست دسته‌ها در صفحات منو) و دکمه‌ی «بازگشت» بالای هر دسته.",
   },
   cardBg: {
     label: "رنگ زمینه‌ی کارت غذا",
-    description: "پس‌زمینه‌ی بخش پایین کارتِ هر غذا، همان قسمتی که نام، توضیح و قیمت در آن نوشته می‌شود.",
+    description:
+      "پس‌زمینه‌ی بخش پایین کارتِ هر غذا، همان قسمتی که نام، توضیح و قیمت در آن نوشته می‌شود.",
   },
   lineColor: {
     label: "رنگ خطوط و حاشیه‌ها",
-    description: "رنگ خط‌های جداکننده بین آیتم‌ها، حاشیه‌ی کارت غذاها، و حاشیه‌ی فیلدهای فرم در پنل مدیریت.",
+    description:
+      "رنگ خط‌های جداکننده بین آیتم‌ها، حاشیه‌ی کارت غذاها، و حاشیه‌ی فیلدهای فرم در پنل مدیریت.",
   },
   mutedText: {
     label: "رنگ متن فرعی",
-    description: "رنگ متن‌های کم‌اهمیت‌تر: توضیح کوتاه زیر نام غذا، برچسب فیلدها در پنل مدیریت، و متن‌های راهنما.",
+    description:
+      "رنگ متن‌های کم‌اهمیت‌تر: توضیح کوتاه زیر نام غذا، برچسب فیلدها در پنل مدیریت، و متن‌های راهنما.",
   },
 };
 
-const safeHex = (hex: string | undefined | null, fallback: string) => (hex && isValidHexColor(hex) ? hex : fallback);
+const safeHex = (hex: string | undefined | null, fallback: string) =>
+  hex && isValidHexColor(hex) ? hex : fallback;
 
 function shade(hex: string, lDelta: number, sDelta = 0): string {
   const [h, s, l] = hexToHsl(hex);
-  return hslToHex(h, Math.min(100, Math.max(0, s + sDelta)), Math.min(97, Math.max(6, l + lDelta)));
+  return hslToHex(
+    h,
+    Math.min(100, Math.max(0, s + sDelta)),
+    Math.min(97, Math.max(6, l + lDelta)),
+  );
 }
 
 export function buildAccentPalette(baseHex: string) {
   const safe = safeHex(baseHex, DEFAULT_THEME.accentColor);
-  return { 100: shade(safe, 23, 3), 300: shade(safe, 10, 1), 400: safe, 500: shade(safe, -12, 3), 700: shade(safe, -24, 5) };
+  return {
+    100: shade(safe, 23, 3),
+    300: shade(safe, 10, 1),
+    400: safe,
+    500: shade(safe, -12, 3),
+    700: shade(safe, -24, 5),
+  };
 }
 
 function buildArchPalette(baseHex: string) {
   const p = buildAccentPalette(baseHex);
-  return { top: p[100], mid: shade(p[400], 3), bottom: p[500], border: shade(p[500], -6, 10) };
+  return {
+    top: p[100],
+    mid: shade(p[400], 3),
+    bottom: p[500],
+    border: shade(p[500], -6, 10),
+  };
 }
 
-export function buildThemeStyleVars(theme: Partial<ThemeColors>): CSSProperties {
+export function buildThemeStyleVars(
+  theme: Partial<ThemeColors>,
+): CSSProperties {
   const t = { ...DEFAULT_THEME };
-  for (const k of Object.keys(t) as (keyof ThemeColors)[]) t[k] = safeHex(theme[k], DEFAULT_THEME[k]);
+  for (const k of Object.keys(t) as (keyof ThemeColors)[])
+    t[k] = safeHex(theme[k], DEFAULT_THEME[k]);
   const a = buildAccentPalette(t.accentColor);
   const arch = buildArchPalette(t.accentColor);
   const vars: Record<string, string> = {
@@ -130,6 +168,7 @@ export function buildThemeStyleVars(theme: Partial<ThemeColors>): CSSProperties 
     "--menu-card": t.cardBg,
     "--menu-line": t.lineColor,
     "--menu-muted": t.mutedText,
+    "--menu-bg": t.menuBg,
     "--bg-top": t.bgTop,
     "--bg-mid": t.bgMid,
     "--bg-bottom": t.bgBottom,
