@@ -62,9 +62,13 @@ export async function updateRestaurantAction(
     return { error: "رنگ انتخاب‌شده معتبر نیست." };
   }
 
+  const currency = String(formData.get("currency") || "");
+  if (currency && currency !== "TOMAN" && currency !== "RIAL") {
+    return { error: "واحد پول نامعتبر است." };
+  }
+
   await connectDB();
 
-  // لوگو فقط وقتی فایل جدیدی انتخاب شده باشد جایگزین می‌شود
   const logo = formData.get("logo") as File | null;
   const logoUrl =
     logo && logo.size > 0
@@ -78,10 +82,9 @@ export async function updateRestaurantAction(
     address: String(formData.get("address") || "").trim(),
     ...(logoUrl ? { logoUrl } : {}),
     ...(themeColor ? { themeColor } : {}),
+    ...(currency ? { currency } : {}),
   });
 
-  // چون رنگ در layout.tsx (ریشه‌ی کل سایت) اعمال می‌شود، با رفرش کردن آن
-  // همه‌ی صفحات (منوی عمومی و پنل مدیریت) رنگ تازه را می‌گیرند.
   revalidatePath("/", "layout");
 
   return { error: undefined };
@@ -89,8 +92,6 @@ export async function updateRestaurantAction(
 
 const THEME_FIELDS = Object.keys(DEFAULT_THEME) as (keyof ThemeColors)[];
 
-// ذخیره‌ی کامل رنگ‌بندی سایت (تب «ظاهر و رنگ‌بندی» در تنظیمات). اگر دکمه‌ی
-// «بازگردانی به پیش‌فرض» زده شده باشد، همه‌ی رنگ‌ها به طرح اصلی برمی‌گردند.
 export async function updateThemeAction(
   _prev: ActionState,
   formData: FormData,

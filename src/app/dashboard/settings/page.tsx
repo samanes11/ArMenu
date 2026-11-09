@@ -13,7 +13,9 @@ export default async function SettingsPage() {
 
   const theme = { ...DEFAULT_THEME } as ThemeColors;
   for (const key of Object.keys(DEFAULT_THEME) as (keyof ThemeColors)[]) {
-    const value = (restaurant as unknown as Record<string, string | undefined>)[key];
+    const value = (restaurant as unknown as Record<string, string | undefined>)[
+      key
+    ];
     if (value) theme[key] = value;
   }
 
@@ -25,6 +27,7 @@ export default async function SettingsPage() {
         phone={restaurant.phone || ""}
         address={restaurant.address || ""}
         logoUrl={restaurant.logoUrl || ""}
+        currency={restaurant.currency}
       />
       <ThemeForm theme={theme} />
     </div>
