@@ -1,4 +1,13 @@
 import { Skeleton } from "@/components/skeleton";
+import { MENU_SECTIONS } from "@/lib/menu-sections";
+
+const ARCH_ASPECT = [
+  "aspect-[70/96]",
+  "aspect-[70/118]",
+  "aspect-[70/140]",
+  "aspect-[70/118]",
+  "aspect-[70/96]",
+];
 
 export default function HomeLoading() {
   return (
@@ -12,12 +21,12 @@ export default function HomeLoading() {
           dir="ltr"
           className="mt-16 flex items-end justify-center gap-[clamp(3px,1vw,6px)]"
         >
-          {Array.from({ length: 5 }).map((_, i) => (
+          {MENU_SECTIONS.map((_, i) => (
             <div
               key={i}
               className="flex w-[clamp(54px,16vw,72px)] flex-col items-center"
             >
-              <Skeleton className="aspect-[70/110] w-full rounded-t-full" />
+              <Skeleton className={`${ARCH_ASPECT[i]} w-full rounded-t-full`} />
               <Skeleton className="mt-3 h-4 w-10" />
             </div>
           ))}
