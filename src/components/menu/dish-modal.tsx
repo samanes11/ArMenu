@@ -2,17 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "motion/react";
-import {
-  ArrowDown,
-  ArrowUp,
-  ClipboardPlus,
-  Maximize2,
-  Share2,
-  X,
-} from "lucide-react";
+import { ArrowDown, ArrowUp, Box, ClipboardPlus, X } from "lucide-react";
 import { formatPriceCompact } from "@/lib/format";
 import type { DishCardData } from "./dish-card";
 import { useNote } from "./note-provider";
@@ -55,6 +47,10 @@ export function DishModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  const arRef = useRef<
+    (HTMLElement & { activateAR: () => void; canActivateAR: boolean }) | null
+  >(null);
+
   if (!dish) return null;
 
   const onScroll = () => {
@@ -78,13 +74,16 @@ export function DishModal({
     });
   };
 
-  const share = async () => {
-    const url = `${location.origin}/dish/${dish.id}`;
-    try {
-      if (navigator.share)
-        await navigator.share({ title: dish.nameEn || dish.name, url });
-      else await navigator.clipboard.writeText(url);
-    } catch {}
+  const openAr = () => {
+    const el = arRef.current;
+    if (!el) return;
+    if (!el.canActivateAR) {
+      alert(
+        "نمایش سه‌بعدی روی این دستگاه پشتیبانی نمی‌شود. با گوشی امتحان کنید.",
+      );
+      return;
+    }
+    el.activateAR();
   };
 
   const qty = qtyOf(dish.id);
@@ -127,27 +126,49 @@ export function DishModal({
               </motion.div>
             </AnimatePresence>
 
-            <button
-              type="button"
-              onClick={share}
-              aria-label="اشتراک‌گذاری"
-              className="pressable absolute left-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur"
-            >
-              <Share2 size={17} />
-            </button>
+            {dish.hasModel && (
+              <model-viewer
+                key={dish.id}
+                ref={arRef}
+                src={dish.modelUrlGlb}
+                ios-src={dish.modelUrlUsdz || undefined}
+                alt={dish.name}
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                ar-scale="auto"
+                ar-placement="floor"
+                loading="eager"
+                style={{
+                  position: "absolute",
+                  width: 1,
+                  height: 1,
+                  opacity: 0,
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+
+            {dish.hasModel && (
+              <button
+                type="button"
+                onClick={openAr}
+                aria-label="مشاهده سه‌بعدی روی میز"
+                className="pressable absolute left-3 top-3 z-10 flex h-10 items-center gap-1.5 rounded-full border border-gold-400 bg-black/60 px-3 text-[13px] font-bold text-gold-400 backdrop-blur"
+              >
+                <Box size={16} /> 3D
+              </button>
+            )}
             <DialogPrimitive.Close
               aria-label="بستن"
               className="pressable absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur"
             >
               <X size={18} />
             </DialogPrimitive.Close>
-            <Link
-              href={`/dish/${dish.id}`}
-              aria-label="نمایش کامل / AR"
-              className="pressable absolute bottom-3 left-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur"
-            >
-              <Maximize2 size={16} />
-            </Link>
+            {dish.hasModel && (
+              <p className="pointer-events-none absolute inset-x-3 bottom-3 z-10 rounded-xl bg-black/60 px-3 py-1.5 text-center text-[11.5px] leading-5 text-white backdrop-blur">
+                با زدن دکمه‌ی 3D، این غذا روی میز شما نمایش داده می‌شود
+              </p>
+            )}
           </div>
 
           {/* Carousel توضیحات */}
@@ -205,11 +226,11 @@ export function DishModal({
                 })
               }
               aria-label="افزودن به یادداشت"
-              className="pressable relative flex h-12 w-12 items-center justify-center rounded-full bg-[#5a0a0a] text-white"
+              className="pressable relative flex h-12 w-12 items-center justify-center rounded-full bg-gold-400 text-black"
             >
               <ClipboardPlus size={21} />
               {qty > 0 && (
-                <span className="absolute -left-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold-400 px-1 text-[11px] font-bold text-black">
+                <span className="absolute -left-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1 text-[11px] font-bold text-gold-400">
                   {qty.toLocaleString("fa-IR")}
                 </span>
               )}

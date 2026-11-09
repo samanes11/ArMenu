@@ -2,7 +2,6 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { BottomSheet } from "./bottom-sheet";
 import Image from "next/image";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
@@ -135,15 +134,15 @@ export function NoteBar() {
                 ))}
               </ul>
 
-              <div className="mt-3 flex items-center justify-between rounded-2xl bg-[#3d0000] px-4 py-3.5 text-[14px] font-medium text-white">
+              <div className="mt-3 flex items-center justify-between rounded-2xl bg-menu-teal px-4 py-3.5 text-[14px] font-medium text-white">
                 <span>مبلغ کل:</span>
-                <span>{formatPriceCompact(total, unit)}</span>
+                <span className="text-gold-400">{formatPriceCompact(total, unit)}</span>
               </div>
             </div>
 
             <div className="flex w-full max-w-md justify-end px-2">
               <DialogPrimitive.Close className="pressable flex flex-col items-center gap-1.5 text-[13px] text-white">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#4a0505]"><X size={22} /></span>
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-menu-teal"><X size={22} /></span>
                 بستن
               </DialogPrimitive.Close>
             </div>

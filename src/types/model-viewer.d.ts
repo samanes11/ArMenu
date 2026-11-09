@@ -20,6 +20,7 @@ declare global {
           "interaction-prompt"?: string;
           exposure?: string;
           poster?: string;
+          loading?: string;
         },
         HTMLElement
       >;

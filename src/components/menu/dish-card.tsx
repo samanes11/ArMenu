@@ -14,6 +14,8 @@ export type DishCardData = {
   price: number;
   thumbnailUrl: string;
   hasModel: boolean;
+  modelUrlGlb: string;
+  modelUrlUsdz: string;
 };
 
 export function DishCard({
