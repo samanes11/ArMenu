@@ -10,6 +10,7 @@ const restaurantSchema = new Schema(
     address: { type: String, default: "" },
     logoUrl: { type: String, default: "" },
     themeColor: { type: String, default: "#ea580c" },
+    themePreset: { type: String, enum: ["green", "silver"], default: "green" },
     accentColor: { type: String, default: "#e2bc3e" },
     bgTop: { type: String, default: "#12261a" },
     bgMid: { type: String, default: "#1a3a24" },

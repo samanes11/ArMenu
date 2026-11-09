@@ -7,7 +7,7 @@ import { Restaurant } from "@/lib/models/Restaurant";
 import { User } from "@/lib/models/User";
 import { getSession, setSessionCookie } from "@/lib/auth";
 import { saveUploadedFile } from "@/lib/storage";
-import { isValidHexColor, DEFAULT_THEME, THEME_FIELD_INFO, type ThemeColors } from "@/lib/theme";
+import { isValidHexColor, DEFAULT_THEME, THEME_FIELD_INFO, THEME_PRESETS, isPresetKey, type ThemeColors } from "@/lib/theme";
 import type { ActionState } from "@/lib/actions/auth";
 
 export async function createRestaurantAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -66,7 +66,7 @@ export async function updateThemeAction(_prev: ActionState, formData: FormData):
   await connectDB();
 
   if (formData.get("resetTheme")) {
-    await Restaurant.findByIdAndUpdate(session.restaurantId, { ...DEFAULT_THEME });
+    await Restaurant.findByIdAndUpdate(session.restaurantId, { ...DEFAULT_THEME, themePreset: "green" });
     revalidatePath("/", "layout");
     return { error: undefined };
   }
@@ -82,4 +82,13 @@ export async function updateThemeAction(_prev: ActionState, formData: FormData):
   await Restaurant.findByIdAndUpdate(session.restaurantId, update);
   revalidatePath("/", "layout");
   return { error: undefined };
+}
+
+export async function applyThemePresetAction(preset: string) {
+  const session = await getSession();
+  if (!session?.restaurantId) redirect("/login");
+  if (!isPresetKey(preset)) return;
+  await connectDB();
+  await Restaurant.findByIdAndUpdate(session.restaurantId, { ...THEME_PRESETS[preset].colors, themePreset: preset });
+  revalidatePath("/", "layout");
 }

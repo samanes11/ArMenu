@@ -4,6 +4,7 @@ import { Restaurant } from "@/lib/models/Restaurant";
 import { DEFAULT_THEME, type ThemeColors } from "@/lib/theme";
 import { SettingsForm } from "./settings-form";
 import { ThemeForm } from "./theme-form";
+import { PresetPicker } from "./preset-picker";
 
 export default async function SettingsPage() {
   const session = await getSession();
@@ -13,7 +14,8 @@ export default async function SettingsPage() {
 
   const theme = { ...DEFAULT_THEME } as ThemeColors;
   const r = restaurant as unknown as Record<string, string | undefined>;
-  for (const key of Object.keys(DEFAULT_THEME) as (keyof ThemeColors)[]) if (r[key]) theme[key] = r[key]!;
+  for (const key of Object.keys(DEFAULT_THEME) as (keyof ThemeColors)[])
+    if (r[key]) theme[key] = r[key]!;
 
   return (
     <div className="flex flex-wrap items-start gap-6">
@@ -25,7 +27,8 @@ export default async function SettingsPage() {
         logoUrl={restaurant.logoUrl || ""}
         currency={restaurant.currency}
       />
-      <ThemeForm theme={theme} />
+      <PresetPicker active={r.themePreset === "silver" ? "silver" : "green"} />
+      <ThemeForm key={Object.values(theme).join()} theme={theme} />
     </div>
   );
 }

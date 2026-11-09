@@ -16,11 +16,13 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   let themeColor = "#ea580c";
+  let preset = "green";
   const theme: Partial<ThemeColors> = {};
   try {
     await connectDB();
-    const restaurant = await Restaurant.findOne().select(["themeColor", ...Object.keys(DEFAULT_THEME)].join(" ")).lean();
+    const restaurant = await Restaurant.findOne().select(["themeColor","themePreset", ...Object.keys(DEFAULT_THEME)].join(" ")).lean();
     if (restaurant) {
+      if ((restaurant as unknown as { themePreset?: string }).themePreset === "silver") preset = "silver";
       if (restaurant.themeColor) themeColor = restaurant.themeColor;
       const r = restaurant as unknown as Record<string, string | undefined>;
       for (const key of Object.keys(DEFAULT_THEME) as (keyof ThemeColors)[]) if (r[key]) theme[key] = r[key];
@@ -28,7 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   } catch {}
 
   return (
-    <html lang="fa" dir="rtl" className={`${vazir.variable} ${en.variable}`} style={{ ...buildBrandStyleVars(themeColor), ...buildThemeStyleVars(theme) }}>
+    <html lang="fa" dir="rtl" data-theme={preset} className={`${vazir.variable} ${en.variable}`} style={{ ...buildBrandStyleVars(themeColor), ...buildThemeStyleVars(theme) }}>
       <body className="bg-neutral-50 font-vazir text-neutral-900 antialiased">{children}</body>
     </html>
   );
