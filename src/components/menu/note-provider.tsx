@@ -1,11 +1,14 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { formatPrice } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { BottomSheet } from "./bottom-sheet";
+import Image from "next/image";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
+import { formatPrice, formatPriceCompact } from "@/lib/format";
 
-export type NoteItem = { id: string; name: string; price: number; qty: number };
+export type NoteItem = { id: string; name: string; price: number; qty: number; thumbnailUrl?: string };
 
 type NoteContextValue = {
   items: NoteItem[];
@@ -85,51 +88,68 @@ export function NoteBar() {
     if (count === 0) setOpen(false);
   }, [count]);
 
-  if (count === 0) return null;
-
   return (
     <>
-      <Button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-5 left-1/2 z-40 -translate-x-1/2 rounded-full px-5 py-3 text-[14px] shadow-[0_10px_30px_-8px_rgba(0,0,0,0.9)]"
-      >
-        <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-black px-1.5 text-[12px] font-bold text-gold-400">{fa(count)}</span>
-        یادداشت من
-      </Button>
+      {count > 0 && (
+        <Button
+          onClick={() => setOpen(true)}
+          className="fixed bottom-5 left-1/2 z-40 -translate-x-1/2 rounded-full px-5 py-3 text-[14px] shadow-[0_10px_30px_-8px_rgba(0,0,0,0.9)]"
+        >
+          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-black px-1.5 text-[12px] font-bold text-gold-400">{fa(count)}</span>
+          یادداشت من
+        </Button>
+      )}
 
-      <BottomSheet open={open} onClose={() => setOpen(false)} ariaLabel="یادداشت من">
-        <div className="p-5 pb-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-[18px] font-bold text-gold-400">یادداشت من</h2>
-            <button type="button" onClick={clear} className="pressable text-[13px] text-menu-muted">
-              پاک کردن همه
-            </button>
-          </div>
+      <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0" />
+          <DialogPrimitive.Content
+            aria-describedby={undefined}
+            onClick={(e) => e.target === e.currentTarget && setOpen(false)}
+            className="fixed inset-0 z-50 flex flex-col items-center gap-3 p-4 outline-none duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[state=open]:slide-in-from-bottom-8 data-[state=closed]:slide-out-to-bottom-8"
+          >
+            <DialogPrimitive.Title className="sr-only">یادداشت من</DialogPrimitive.Title>
 
-          <ul className="divide-y divide-menu-line">
-            {items.map((item) => (
-              <li key={item.id} className="flex items-center gap-3 py-3">
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[15px] text-white">{item.name}</p>
-                  <p className="text-[13px] text-menu-muted">
-                    <span dir="ltr" className="inline-block">{formatPrice(item.price, unit, true)}</span>
-                  </p>
-                </div>
-                <div className="flex items-center gap-1 rounded-full border border-menu-line">
-                  <Button variant="ghost" size="icon" aria-label="افزودن" onClick={() => add(item)} className="rounded-full text-[18px] text-gold-400">+</Button>
-                  <span className="w-5 text-center text-[14px]">{fa(item.qty)}</span>
-                  <Button variant="ghost" size="icon" aria-label="کم کردن" onClick={() => decrease(item.id)} className="rounded-full text-[18px] text-gold-400">−</Button>
-                </div>
-              </li>
-            ))}
-          </ul>
+            <div className="flex min-h-0 w-full max-w-md flex-1 flex-col rounded-3xl border border-white/10 bg-black/45 p-3 backdrop-blur-xl">
+              <div className="mb-2 flex items-center justify-between px-1">
+                <h2 className="text-[16px] font-bold text-gold-400">یادداشت من</h2>
+                <button type="button" onClick={clear} className="pressable text-[12px] text-menu-muted">پاک کردن همه</button>
+              </div>
 
-          <div className="mt-4 flex items-center justify-between border-t border-menu-line pt-4 text-[16px]">
-            <span>جمع کل</span>
-            <span dir="ltr" className="font-bold text-gold-400">{formatPrice(total, unit, true)}</span>
-          </div>
-        </div>
-      </BottomSheet>
+              <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto">
+                {items.map((item) => (
+                  <li key={item.id} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2.5">
+                    <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-black">
+                      {item.thumbnailUrl && <Image src={item.thumbnailUrl} alt={item.name} width={56} height={56} className="h-full w-full object-cover" />}
+                    </div>
+                    <div className="min-w-0 flex-1 text-right">
+                      <p className="truncate text-[15px] text-white">{item.name}</p>
+                      <p className="text-[13px] text-white/80">{formatPriceCompact(item.price * item.qty, unit)}</p>
+                    </div>
+                    <div className="flex items-center gap-1 rounded-full bg-white/10 px-1">
+                      <button type="button" aria-label="افزودن" onClick={() => add(item)} className="pressable h-8 w-8 text-[18px] text-white">+</button>
+                      <span className="w-6 text-center text-[14px] font-medium text-white">{fa(item.qty)}</span>
+                      <button type="button" aria-label="کم کردن" onClick={() => decrease(item.id)} className="pressable h-8 w-8 text-[18px] text-white">−</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-3 flex items-center justify-between rounded-2xl bg-[#3d0000] px-4 py-3.5 text-[14px] font-medium text-white">
+                <span>مبلغ کل:</span>
+                <span>{formatPriceCompact(total, unit)}</span>
+              </div>
+            </div>
+
+            <div className="flex w-full max-w-md justify-end px-2">
+              <DialogPrimitive.Close className="pressable flex flex-col items-center gap-1.5 text-[13px] text-white">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#4a0505]"><X size={22} /></span>
+                بستن
+              </DialogPrimitive.Close>
+            </div>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
     </>
   );
 }
