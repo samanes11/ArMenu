@@ -16,6 +16,7 @@ export type DishCardData = {
   hasModel: boolean;
   modelUrlGlb: string;
   modelUrlUsdz: string;
+  available: boolean;
 };
 
 export function DishCard({
@@ -57,7 +58,7 @@ export function DishCard({
             alt={dish.name}
             fill
             sizes="(max-width: 640px) 45vw, 200px"
-            className="object-cover"
+            className={cn("object-cover", !dish.available && "opacity-55")}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-white/15">
@@ -72,10 +73,21 @@ export function DishCard({
           </div>
         )}
 
+        {!dish.available && (
+          <span className="pointer-events-none absolute bottom-1.5 left-1.5 z-10 -rotate-6 rounded-sm border border-dashed border-black/70 bg-white px-2 py-0.5 text-[11px] font-bold text-black shadow-md">
+            تمام شد
+          </span>
+        )}
+
         {dish.hasModel && (
           <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full border border-gold-400 bg-black/60 px-2 py-0.5 text-[10px] font-bold text-gold-400 backdrop-blur">
             <Box size={10} strokeWidth={2} aria-hidden="true" />
             AR
+          </span>
+        )}
+        {!dish.available && (
+          <span className="pointer-events-none absolute bottom-2 left-2 z-10 -rotate-3 rounded-[3px] border border-dashed border-neutral-800 bg-white px-2.5 py-1 text-[11px] font-bold text-neutral-900 shadow-sm">
+            تمام شد
           </span>
         )}
       </button>
@@ -100,7 +112,11 @@ export function DishCard({
         </p>
       </div>
 
-      {qty === 0 ? (
+      {!dish.available ? (
+        <div className="flex h-11 w-full items-center justify-center border-t border-menu-line bg-[var(--menu-bg)] text-[13px] text-white/40">
+          موجود نیست
+        </div>
+      ) : qty === 0 ? (
         <button
           type="button"
           onClick={() => add(item)}

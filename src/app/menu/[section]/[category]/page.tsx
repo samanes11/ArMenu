@@ -27,9 +27,8 @@ export default async function CategoryPage({
   const dishes = await Dish.find({
     restaurantId: restaurant._id,
     category: categoryLabel,
-    available: true,
   })
-    .sort({ order: 1, createdAt: -1 })
+    .sort({ available: -1, order: 1, createdAt: -1 })
     .lean();
 
   const unit = currencyUnit(restaurant.currency);
@@ -79,6 +78,7 @@ export default async function CategoryPage({
             hasModel: Boolean(dish.modelUrlGlb),
             modelUrlGlb: dish.modelUrlGlb || "",
             modelUrlUsdz: dish.modelUrlUsdz || "",
+            available: dish.available,
           }))}
         />
       )}

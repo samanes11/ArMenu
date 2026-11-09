@@ -4,7 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowDown, ArrowUp, Box, ClipboardPlus, X } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Box,
+  ClipboardPlus,
+  Maximize2,
+  Share2,
+  X,
+} from "lucide-react";
 import { formatPriceCompact } from "@/lib/format";
 import type { DishCardData } from "./dish-card";
 import { useNote } from "./note-provider";

@@ -7,8 +7,32 @@ import { Dish } from "@/lib/models/Dish";
 import { getSession } from "@/lib/auth";
 import { saveUploadedFile } from "@/lib/storage";
 import type { ActionState } from "@/lib/actions/auth";
+import { findByCategory } from "@/lib/menu-sections";
 
-async function resolveAsset(formData: FormData, fileKey: string, urlKey: string, restaurantId: string): Promise<string | null> {
+export async function toggleDishAvailabilityAction(dishId: string) {
+  const restaurantId = await requireRestaurant();
+  await connectDB();
+  const dish = await Dish.findOneAndUpdate(
+    { _id: dishId, restaurantId },
+    [{ $set: { available: { $not: "$available" } } }],
+    { new: true },
+  );
+  revalidatePath("/dashboard");
+  if (dish) {
+    const found = findByCategory(dish.category);
+    if (found)
+      revalidatePath(
+        `/menu/${found.section.key}/${encodeURIComponent(found.category.label)}`,
+      );
+  }
+}
+
+async function resolveAsset(
+  formData: FormData,
+  fileKey: string,
+  urlKey: string,
+  restaurantId: string,
+): Promise<string | null> {
   const file = formData.get(fileKey) as File | null;
   if (file && file.size > 0) return saveUploadedFile(file, restaurantId);
   const url = String(formData.get(urlKey) || "").trim();
@@ -23,7 +47,10 @@ async function requireRestaurant() {
 
 const INVALID = { error: "نام غذا و قیمت معتبر (به تومان) الزامی است." };
 
-export async function createDishAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function createDishAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const restaurantId = await requireRestaurant();
   const name = String(formData.get("name") || "").trim();
   const price = Number(formData.get("price") || 0);
@@ -52,7 +79,10 @@ export async function createDishAction(_prev: ActionState, formData: FormData): 
   return { success: true };
 }
 
-export async function updateDishAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function updateDishAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const restaurantId = await requireRestaurant();
   const dishId = String(formData.get("dishId") || "");
   const name = String(formData.get("name") || "").trim();
@@ -81,13 +111,6 @@ export async function updateDishAction(_prev: ActionState, formData: FormData): 
 
   revalidatePath("/dashboard");
   return { success: true };
-}
-
-export async function toggleDishAvailabilityAction(dishId: string) {
-  const restaurantId = await requireRestaurant();
-  await connectDB();
-  await Dish.updateOne({ _id: dishId, restaurantId }, [{ $set: { available: { $not: "$available" } } }]);
-  revalidatePath("/dashboard");
 }
 
 export async function deleteDishAction(dishId: string) {
