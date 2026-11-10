@@ -175,7 +175,7 @@ export function DishModal({
               <div
                 key={d.id}
                 dir="rtl"
-                className="w-[85%] shrink-0 snap-center snap-always rounded-[28px] bg-white px-4 py-4 text-right text-neutral-900"
+                className="w-[95%] shrink-0 snap-center snap-always rounded-[28px] bg-white px-4 py-4 text-right text-neutral-900"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="text-[17px] font-bold leading-7">{d.nameEn || d.name}</h3>
@@ -203,7 +203,7 @@ export function DishModal({
           </div>
 
           {/* نوار قیمت: تمام‌عرض، عدد بالا و واحد پول («تومان») زیرش به‌صورت عمودی */}
-          <div className="flex w-full shrink-0 items-center justify-between rounded-full bg-black/85 py-2 pl-5 pr-2 backdrop-blur">
+          <div className="flex w-full shrink-0 items-center justify-between rounded-full bg-menu-teal py-2 pl-5 pr-2 backdrop-blur">
             <div className="flex flex-col items-start leading-tight">
               <span className="text-[18px] font-bold text-white">{priceParts.value}</span>
               <span className="text-[12px] text-gold-400">{priceParts.label}</span>
