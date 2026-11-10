@@ -74,18 +74,18 @@ export const THEME_PRESETS: Record<
   { label: string; colors: ThemeColors }
 > = {
   green: { label: "سبز طلایی", colors: DEFAULT_THEME },
-  silver: {
+silver: {
     label: "طوسی نقره‌ای",
     colors: {
-      accentColor: "#c4c9cd",
-      bgTop: "#2a2d2e",
-      bgMid: "#383b3d",
-      bgBottom: "#2c2f31",
-      menuBg: "#101112",
-      sidebarBg: "#444b4e",
-      cardBg: "#2b2e30",
-      lineColor: "#4a4f52",
-      mutedText: "#a9aeb2",
+      accentColor: "#cdd7df",
+      bgTop: "#232931",
+      bgMid: "#2f3842",
+      bgBottom: "#262d35",
+      menuBg: "#13161b",
+      sidebarBg: "#3c4752",
+      cardBg: "#262d34",
+      lineColor: "#47525e",
+      mutedText: "#9fabb8",
     },
   },
 };
