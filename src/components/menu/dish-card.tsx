@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Box, Circle, CircleDot } from "lucide-react";
-import { formatPrice } from "@/lib/format";
+import { formatPriceStack } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useNote } from "./note-provider";
 
@@ -30,6 +30,7 @@ export function DishCard({
 }) {
   const { qtyOf, add, decrease } = useNote();
   const qty = qtyOf(dish.id);
+  const price = formatPriceStack(dish.price, unit);
   const item = {
     id: dish.id,
     name: dish.name,
@@ -104,9 +105,15 @@ export function DishCard({
           </p>
         )}
 
-        <p className="mt-auto pt-2 text-[14px] font-medium text-gold-400">
-          {formatPrice(dish.price, unit)}
-        </p>
+        <div className="mt-auto flex items-center gap-1.5 pt-2 text-white">
+          <span className="text-[19px] font-bold leading-none">
+            {price.num}
+          </span>
+          <span className="flex flex-col text-[11px] font-medium leading-[1.25]">
+            {price.scale && <span>{price.scale}</span>}
+            <span>{price.unit}</span>
+          </span>
+        </div>
       </div>
 
       {!dish.available ? (
