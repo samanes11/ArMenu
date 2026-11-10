@@ -13,7 +13,7 @@ import {
   Share2,
   X,
 } from "lucide-react";
-import { formatPriceCompact } from "@/lib/format";
+import { formatPriceCompact, formatPriceParts } from "@/lib/format";
 import type { DishCardData } from "./dish-card";
 import { useNote } from "./note-provider";
 
@@ -95,6 +95,7 @@ export function DishModal({
   };
 
   const qty = qtyOf(dish.id);
+  const priceParts = formatPriceParts(dish.price, unit);
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={(o) => !o && onClose()}>
@@ -102,13 +103,13 @@ export function DishModal({
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0" />
         <DialogPrimitive.Content
           aria-describedby={undefined}
-          className="fixed inset-0 z-50 m-auto flex h-[min(92dvh,820px)] w-[calc(100%-24px)] max-w-[420px] flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#141414] p-3.5 outline-none duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[state=open]:slide-in-from-bottom-10 data-[state=closed]:slide-out-to-bottom-10"
+          className="fixed inset-0 z-50 m-auto flex h-[min(92dvh,820px)] w-[calc(100%-24px)] max-w-[420px] flex-col gap-3 p-3 outline-none duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[state=open]:slide-in-from-bottom-10 data-[state=closed]:slide-out-to-bottom-10"
         >
           <DialogPrimitive.Title className="sr-only">
             {dish.name}
           </DialogPrimitive.Title>
 
-          {/* تصویر */}
+          {/* عکس (دکمه‌ها روی خودِ عکس، چون رفرنس همینه) */}
           <div className="relative min-h-0 flex-1 overflow-hidden rounded-3xl bg-black">
             <AnimatePresence initial={false}>
               <motion.div
@@ -156,39 +157,40 @@ export function DishModal({
               />
             )}
 
-            {dish.hasModel && (
-              <button
-                type="button"
-                onClick={openAr}
-                aria-label="مشاهده سه‌بعدی روی میز"
-                className="pressable absolute left-3 top-3 z-10 flex h-10 items-center gap-1.5 rounded-full border border-gold-400 bg-black/60 px-3 text-[13px] font-bold text-gold-400 backdrop-blur"
+            <div className="absolute inset-x-3 top-3 z-10 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {dish.hasModel && (
+                  <button
+                    type="button"
+                    onClick={openAr}
+                    aria-label="مشاهده سه‌بعدی روی میز"
+                    className="pressable flex h-10 items-center gap-1.5 rounded-full border border-gold-400 bg-black/55 px-3 text-[13px] font-bold text-gold-400 backdrop-blur"
+                  >
+                    3D <Box size={16} />
+                  </button>
+                )}
+              </div>
+
+              <DialogPrimitive.Close
+                aria-label="بستن"
+                className="pressable flex h-10 w-10 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur"
               >
-                <Box size={16} /> 3D
-              </button>
-            )}
-            <DialogPrimitive.Close
-              aria-label="بستن"
-              className="pressable absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur"
-            >
-              <X size={18} />
-            </DialogPrimitive.Close>
-            {dish.hasModel && (
-              <p className="pointer-events-none absolute inset-x-3 bottom-3 z-10 rounded-xl bg-black/60 px-3 py-1.5 text-center text-[11.5px] leading-5 text-white backdrop-blur">
-                با زدن دکمه‌ی 3D، این غذا روی میز شما نمایش داده می‌شود
-              </p>
-            )}
+                <X size={18} />
+              </DialogPrimitive.Close>
+            </div>
+
           </div>
 
-          {/* Carousel توضیحات */}
+          {/* کارت توضیحات — کاملاً جدا از عکس، تمام‌عرض */}
           <div
             ref={scroller}
             onScroll={onScroll}
-            className="no-scrollbar -mx-3.5 mt-3 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-[9%]"
+            className="no-scrollbar flex shrink-0 snap-x snap-mandatory gap-3 overflow-x-auto"
           >
             {dishes.map((d, i) => (
               <div
                 key={d.id}
-                className="w-[82%] shrink-0 snap-center snap-always rounded-3xl bg-white p-4 text-right text-neutral-900"
+                className="w-full shrink-0 snap-center snap-always rounded-3xl bg-white p-4 text-right text-neutral-900"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="text-[17px] font-bold leading-7">
@@ -221,8 +223,17 @@ export function DishModal({
             ))}
           </div>
 
-          {/* نوار پایین */}
-          <div className="mt-3 flex items-center justify-between px-1.5">
+          {/* نوار قیمت — کاملاً جدا، به‌صورت کپسول */}
+          <div className="flex shrink-0 items-center justify-between rounded-full bg-black/80 py-2 pl-2 pr-5 backdrop-blur">
+            <div className="flex flex-col items-start leading-tight">
+              <span className="text-[18px] font-bold text-white">
+                {priceParts.value}
+              </span>
+              <span className="text-[12px] text-gold-400">
+                {priceParts.label}
+              </span>
+            </div>
+
             <button
               type="button"
               onClick={() =>
@@ -243,9 +254,6 @@ export function DishModal({
                 </span>
               )}
             </button>
-            <p className="text-[17px] font-bold text-white">
-              {formatPriceCompact(dish.price, unit)}
-            </p>
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

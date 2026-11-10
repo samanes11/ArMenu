@@ -17,3 +17,13 @@ export function formatPriceCompact(amount: number, unit = "تومان") {
   if (amount >= 1_000) return `${n(amount / 1_000)} هزار ${unit}`;
   return `${n(amount)} ${unit}`;
 }
+
+export function formatPriceParts(amount: number, unit = "تومان") {
+  const n = (v: number) =>
+    v.toLocaleString("fa-IR", { maximumFractionDigits: 3 });
+  if (amount >= 1_000_000)
+    return { value: n(amount / 1_000_000), label: `میلیون ${unit}` };
+  if (amount >= 1_000)
+    return { value: n(amount / 1_000), label: `هزار ${unit}` };
+  return { value: n(amount), label: unit };
+}
