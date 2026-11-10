@@ -22,8 +22,8 @@ export function formatPriceParts(amount: number, unit = "تومان") {
   const n = (v: number) =>
     v.toLocaleString("fa-IR", { maximumFractionDigits: 3 });
   if (amount >= 1_000_000)
-    return { value: n(amount / 1_000_000), label: `میلیون ${unit}` };
+    return { value: `${n(amount / 1_000_000)} میلیون`, label: unit };
   if (amount >= 1_000)
-    return { value: n(amount / 1_000), label: `هزار ${unit}` };
+    return { value: `${n(amount / 1_000)} هزار`, label: unit };
   return { value: n(amount), label: unit };
 }
