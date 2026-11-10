@@ -155,15 +155,27 @@ export function DishModal({
                 style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
               />
             )}
+
+            {!dish.available && (
+              <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+                <span className="-rotate-12 rounded-2xl border-[3px] border-black bg-white px-7 py-3 text-[22px] font-extrabold tracking-wide text-black shadow-xl">
+                  تمام شد
+                </span>
+              </div>
+            )}
           </div>
 
           {/* کارت توضیحات */}
-          <div ref={scroller} onScroll={onScroll} className="no-scrollbar flex shrink-0 snap-x snap-mandatory gap-2 overflow-x-auto">
+          <div
+            ref={scroller}
+            onScroll={onScroll}
+            className="no-scrollbar flex shrink-0 snap-x snap-mandatory gap-2.5 overflow-x-auto px-6"
+          >
             {dishes.map((d, i) => (
               <div
                 key={d.id}
                 dir="rtl"
-                className="w-full shrink-0 snap-center snap-always rounded-[28px] bg-white px-4 py-4 text-right text-neutral-900"
+                className="w-[85%] shrink-0 snap-center snap-always rounded-[28px] bg-white px-4 py-4 text-right text-neutral-900"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="text-[17px] font-bold leading-7">{d.nameEn || d.name}</h3>
@@ -199,12 +211,13 @@ export function DishModal({
 
             <button
               type="button"
-              onClick={() => add({ id: dish.id, name: dish.name, price: dish.price, thumbnailUrl: dish.thumbnailUrl })}
-              aria-label="افزودن به یادداشت"
-              className="pressable relative flex h-12 w-12 items-center justify-center rounded-full bg-gold-400 text-black"
+              disabled={!dish.available}
+              onClick={() => dish.available && add({ id: dish.id, name: dish.name, price: dish.price, thumbnailUrl: dish.thumbnailUrl })}
+              aria-label={dish.available ? "افزودن به یادداشت" : "این غذا موجود نیست"}
+              className="pressable relative flex h-12 w-12 items-center justify-center rounded-full bg-gold-400 text-black disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/40"
             >
               <ClipboardPlus size={21} />
-              {qty > 0 && (
+              {dish.available && qty > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1 text-[11px] font-bold text-gold-400">
                   {qty.toLocaleString("fa-IR")}
                 </span>

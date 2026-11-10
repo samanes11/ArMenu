@@ -73,22 +73,19 @@ export function DishCard({
           </div>
         )}
 
-        {!dish.available && (
-          <span className="pointer-events-none absolute bottom-1.5 left-1.5 z-10 -rotate-6 rounded-sm border border-dashed border-black/70 bg-white px-2 py-0.5 text-[11px] font-bold text-black shadow-md">
-            تمام شد
-          </span>
-        )}
-
         {dish.hasModel && (
           <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full border border-gold-400 bg-black/60 px-2 py-0.5 text-[10px] font-bold text-gold-400 backdrop-blur">
             <Box size={10} strokeWidth={2} aria-hidden="true" />
             AR
           </span>
         )}
+
         {!dish.available && (
-          <span className="pointer-events-none absolute bottom-2 left-2 z-10 -rotate-3 rounded-[3px] border border-dashed border-neutral-800 bg-white px-2.5 py-1 text-[11px] font-bold text-neutral-900 shadow-sm">
-            تمام شد
-          </span>
+          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+            <span className="-rotate-12 rounded-xl border-[2.5px] border-black bg-white px-4 py-1.5 text-[14px] font-extrabold tracking-wide text-black shadow-lg">
+              تمام شد
+            </span>
+          </div>
         )}
       </button>
 
