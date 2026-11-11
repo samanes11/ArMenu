@@ -8,6 +8,7 @@ import { getSession } from "@/lib/auth";
 import { saveUploadedFile } from "@/lib/storage";
 import type { ActionState } from "@/lib/actions/auth";
 import { findByCategory } from "@/lib/menu-sections";
+import { blurFromUrl } from "@/lib/blur";
 
 export async function toggleDishAvailabilityAction(dishId: string) {
   const restaurantId = await requireRestaurant();
@@ -63,6 +64,7 @@ export async function createDishAction(
     resolveAsset(formData, "modelUsdz", "modelUrlUsdz", restaurantId),
   ]);
 
+  const blurDataUrl = thumbnailUrl ? await blurFromUrl(thumbnailUrl) : "";
   await Dish.create({
     restaurantId,
     name,
@@ -70,6 +72,7 @@ export async function createDishAction(
     description: String(formData.get("description") || ""),
     price,
     category: String(formData.get("category") || "سایر"),
+    blurDataUrl,
     thumbnailUrl: thumbnailUrl ?? "",
     modelUrlGlb: modelUrlGlb ?? "",
     modelUrlUsdz: modelUrlUsdz ?? "",
@@ -98,7 +101,10 @@ export async function updateDishAction(
     resolveAsset(formData, "modelGlb", "modelUrlGlb", restaurantId),
     resolveAsset(formData, "modelUsdz", "modelUrlUsdz", restaurantId),
   ]);
-  if (t !== null) dish.thumbnailUrl = t;
+  if (t !== null) {
+    dish.thumbnailUrl = t;
+    dish.blurDataUrl = await blurFromUrl(t);
+  }
   if (g !== null) dish.modelUrlGlb = g;
   if (u !== null) dish.modelUrlUsdz = u;
 

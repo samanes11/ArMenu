@@ -144,6 +144,8 @@ export function DishModal({
                     sizes="400px"
                     className="object-cover"
                     priority
+                    placeholder={dish.blurDataUrl ? "blur" : "empty"}
+                    blurDataURL={dish.blurDataUrl || undefined}
                   />
                 ) : (
                   <div className="h-full w-full bg-menu-card" />

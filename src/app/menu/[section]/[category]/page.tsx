@@ -75,6 +75,7 @@ export default async function CategoryPage({
             description: dish.description || "",
             price: dish.price,
             thumbnailUrl: dish.thumbnailUrl || "",
+            blurDataUrl: dish.blurDataUrl || "",
             hasModel: Boolean(dish.modelUrlGlb),
             modelUrlGlb: dish.modelUrlGlb || "",
             modelUrlUsdz: dish.modelUrlUsdz || "",

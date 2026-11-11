@@ -9,6 +9,7 @@ const dishSchema = new Schema(
     price: { type: Number, required: true, min: 0 },
     category: { type: String, default: "سایر" },
     thumbnailUrl: { type: String, default: "" },
+    blurDataUrl: { type: String, default: "" },
     modelUrlGlb: { type: String, default: "" },
     modelUrlUsdz: { type: String, default: "" },
     order: { type: Number, default: 0 },

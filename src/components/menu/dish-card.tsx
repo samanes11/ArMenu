@@ -13,6 +13,7 @@ export type DishCardData = {
   description: string;
   price: number;
   thumbnailUrl: string;
+  blurDataUrl: string;
   hasModel: boolean;
   modelUrlGlb: string;
   modelUrlUsdz: string;
@@ -60,6 +61,8 @@ export function DishCard({
             fill
             sizes="(max-width: 640px) 45vw, 200px"
             className={cn("object-cover", !dish.available && "opacity-55")}
+            placeholder={dish.blurDataUrl ? "blur" : "empty"}
+            blurDataURL={dish.blurDataUrl || undefined}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-white/15">
