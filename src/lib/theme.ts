@@ -67,14 +67,14 @@ export const DEFAULT_THEME: ThemeColors = {
   mutedText: "#9b9b9b",
 };
 
-export type ThemePresetKey = "green" | "silver";
+export type ThemePresetKey = "green" | "silver" | "redblack";
 
 export const THEME_PRESETS: Record<
   ThemePresetKey,
   { label: string; colors: ThemeColors }
 > = {
   green: { label: "سبز طلایی", colors: DEFAULT_THEME },
-silver: {
+  silver: {
     label: "طوسی نقره‌ای",
     colors: {
       accentColor: "#cdd7df",
@@ -86,6 +86,20 @@ silver: {
       cardBg: "#262d34",
       lineColor: "#47525e",
       mutedText: "#9fabb8",
+    },
+  },
+  redblack: {
+    label: "مشکی قرمز",
+    colors: {
+      accentColor: "#e3263a",
+      bgTop: "#1a0a0c",
+      bgMid: "#2a0e12",
+      bgBottom: "#120607",
+      menuBg: "#0a0000",
+      sidebarBg: "#2b0d10",
+      cardBg: "#1c0a0b",
+      lineColor: "#3d1518",
+      mutedText: "#b08386",
     },
   },
 };

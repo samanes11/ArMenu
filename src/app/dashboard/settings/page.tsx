@@ -1,9 +1,8 @@
 import { getSession } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
 import { Restaurant } from "@/lib/models/Restaurant";
-import { DEFAULT_THEME, type ThemeColors } from "@/lib/theme";
+import { DEFAULT_THEME, isPresetKey, type ThemeColors } from "@/lib/theme";
 import { SettingsForm } from "./settings-form";
-import { ThemeForm } from "./theme-form";
 import { PresetPicker } from "./preset-picker";
 
 export default async function SettingsPage() {
@@ -27,8 +26,12 @@ export default async function SettingsPage() {
         logoUrl={restaurant.logoUrl || ""}
         currency={restaurant.currency}
       />
-      <PresetPicker active={r.themePreset === "silver" ? "silver" : "green"} />
-      <ThemeForm key={Object.values(theme).join()} theme={theme} />
+      <PresetPicker
+        active={
+          r.themePreset && isPresetKey(r.themePreset) ? r.themePreset : "green"
+        }
+        theme={theme}
+      />
     </div>
   );
 }
