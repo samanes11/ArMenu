@@ -1,8 +1,8 @@
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Home } from "lucide-react";
-import { connectDB } from "@/lib/db";
-import { Restaurant } from "@/lib/models/Restaurant";
+import { getRestaurant } from "@/lib/get-restaurant";
 import { Dish } from "@/lib/models/Dish";
 import { getCategory } from "@/lib/menu-sections";
 import { currencyUnit } from "@/lib/format";
@@ -14,14 +14,13 @@ export default async function CategoryPage({
   params: Promise<{ section: string; category: string }>;
 }) {
   const { section: sectionKey, category: categoryParam } = await params;
+
   const categoryLabel = decodeURIComponent(categoryParam);
   const category = getCategory(sectionKey, categoryLabel);
 
   if (!category) notFound();
 
-  await connectDB();
-
-  const restaurant = await Restaurant.findOne().select("_id currency").lean();
+  const restaurant = await getRestaurant();
   if (!restaurant) notFound();
 
   const dishes = await Dish.find({
