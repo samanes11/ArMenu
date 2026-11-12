@@ -32,7 +32,16 @@ export function DishModal({
 
   useEffect(() => setExpanded(false), [index]);
 
-  // موقع باز شدن، کارتِ آیتم انتخاب‌شده را وسط carousel بیاور
+  useEffect(() => {
+    if (!open || !dish.hasModel) return;
+    if (customElements.get("model-viewer")) return;
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src =
+      "https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js";
+    document.head.appendChild(script);
+  }, [open, dish.hasModel]);
+
   useEffect(() => {
     if (!open) return;
     const id = requestAnimationFrame(() => {
