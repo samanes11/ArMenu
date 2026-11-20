@@ -111,7 +111,6 @@ export function DishModal({
             {dish.name}
           </DialogPrimitive.Title>
 
-          {/* هدر: دکمه‌ی 3D سمت چپ، بستن سمت راست — بالای عکس، نه روی خود عکس */}
           <div className="flex shrink-0 items-center justify-between px-0.5">
             {dish.hasModel ? (
               <button
