@@ -253,3 +253,17 @@ a:active > .menu-arch { transform: scale(0.96); }
   animation: reveal-fade 600ms ease-out backwards;
   animation-delay: var(--delay, 0ms);
 }
+
+html[data-home-revisit] main .drop-in,
+html[data-home-revisit] main .materialize,
+html[data-home-revisit] main .reveal,
+html[data-home-revisit] main .food-in {
+  animation-duration: 320ms !important;
+  animation-delay: calc(var(--delay, 0ms) * 0.15) !important;
+  animation-timing-function: var(--ease-spring) !important;
+}
+
+html[data-home-revisit] main .splash-ring-wrap,
+html[data-home-revisit] main .splash-logo-wrap {
+  display: none !important;
+}

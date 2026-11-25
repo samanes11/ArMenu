@@ -3,6 +3,7 @@ import { MENU_SECTIONS } from "@/lib/menu-sections";
 import { SectionCard } from "@/components/menu/section-card";
 import { FoodBackdrop } from "@/components/menu/food-backdrop";
 import { ContactButton } from "@/components/menu/contact-button";
+import { HomeMotion } from "./home-motion";
 
 const H_NORMAL = "h-[clamp(140px,38vw,170px)] md:h-52 lg:h-64 xl:h-72";
 const H_BIG = "h-[clamp(160px,44vw,200px)] md:h-52 lg:h-64 xl:h-72";
@@ -31,6 +32,7 @@ export function HomeSplash({
 }) {
   return (
     <main className="menu-theme menu-green relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden">
+      <HomeMotion />
       <FoodBackdrop />
 
       <div

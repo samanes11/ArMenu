@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Home } from "lucide-react";
@@ -36,6 +35,7 @@ export default async function CategoryPage({
     <div className="relative px-3 pb-28 pt-6 sm:px-6">
       <Link
         href="/"
+        prefetch
         className="pressable pop-in absolute right-0 top-6 z-20 flex items-center gap-2 rounded-l-full bg-menu-teal py-2 pl-4 pr-3 text-[15px] text-white"
       >
         <Home size={19} fill="currentColor" aria-hidden="true" />

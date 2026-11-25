@@ -1,14 +1,11 @@
 import Link from "next/link";
-import { connectDB } from "@/lib/db";
-import { Restaurant } from "@/lib/models/Restaurant";
 import { HomeClassic } from "@/components/menu/home-classic";
 import { HomeSplash } from "@/components/menu/home-splash";
 import { Button } from "@/components/ui/button";
+import { getRestaurant } from "@/lib/get-restaurant";
 
 export default async function Home() {
-  await connectDB();
-  const restaurant = await Restaurant.findOne().lean();
-
+const restaurant = await getRestaurant();
   if (!restaurant) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center">
