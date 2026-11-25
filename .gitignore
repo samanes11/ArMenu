@@ -10,4 +10,4 @@ yarn-error.log*
 .env*.local
 *.tsbuildinfo
 next-env.d.ts
-/public/uploads
+/public
