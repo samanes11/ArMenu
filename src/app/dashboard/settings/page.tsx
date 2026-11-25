@@ -4,6 +4,7 @@ import { Restaurant } from "@/lib/models/Restaurant";
 import { DEFAULT_THEME, isPresetKey, type ThemeColors } from "@/lib/theme";
 import { SettingsForm } from "./settings-form";
 import { PresetPicker } from "./preset-picker";
+import { HomeTemplatePicker } from "./home-template-picker";
 
 export default async function SettingsPage() {
   const session = await getSession();
@@ -31,6 +32,9 @@ export default async function SettingsPage() {
           r.themePreset && isPresetKey(r.themePreset) ? r.themePreset : "green"
         }
         theme={theme}
+      />
+      <HomeTemplatePicker
+        active={r.homeTemplate === "splash" ? "splash" : "classic"}
       />
     </div>
   );

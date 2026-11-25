@@ -177,3 +177,14 @@ a:active > .menu-arch { transform: scale(0.96); }
   background: color-mix(in srgb, var(--gold-400) 14%, transparent);
   border: 1px solid color-mix(in srgb, var(--gold-400) 50%, transparent);
 }
+
+.loading-ring-wrap {
+  animation: ring-expand 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.loading-logo-wrap {
+  animation: logo-expand 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-ring-wrap, .loading-logo-wrap { animation: none; opacity: 0.6; }
+}

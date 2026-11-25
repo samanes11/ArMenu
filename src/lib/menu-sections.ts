@@ -2,7 +2,8 @@ import type { CategoryIconKey } from "@/components/menu/category-icons";
 
 export type SectionKey = "breakfast" | "lunch" | "dinner" | "appetizer" | "cafe";
 export type MenuCategory = { label: string; labelEn: string; icon: CategoryIconKey };
-export type MenuSectionDef = { key: SectionKey; label: string; categories: MenuCategory[] };
+export type MenuSectionDef = { key: SectionKey; label: string; image?: string; categories: MenuCategory[] };
+
 
 export const MENU_SECTIONS: MenuSectionDef[] = [
   {

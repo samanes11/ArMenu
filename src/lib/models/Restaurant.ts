@@ -20,6 +20,11 @@ const restaurantSchema = new Schema(
       enum: ["green", "silver", "redblack"],
       default: "green",
     },
+    homeTemplate: {
+      type: String,
+      enum: ["classic", "splash"],
+      default: "classic",
+    },
     accentColor: { type: String, default: "#e2bc3e" },
     bgTop: { type: String, default: "#12261a" },
     bgMid: { type: String, default: "#1a3a24" },
