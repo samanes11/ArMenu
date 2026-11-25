@@ -13,7 +13,6 @@ function ClassicPreview() {
   return (
     <svg viewBox="0 0 100 80" className="h-full w-full">
       <rect width="100" height="80" fill="#12261a" />
-      <rect x="35" y="8" width="30" height="5" rx="2.5" fill="#e2bc3e" />
       {heights.map((h, i) => {
         const x = 14 + i * 15;
         const top = 66 - h;
@@ -40,14 +39,6 @@ function SplashPreview() {
   return (
     <svg viewBox="0 0 100 80" className="h-full w-full">
       <rect width="100" height="80" fill="#12261a" />
-      <circle
-        cx="50"
-        cy="14"
-        r="6"
-        fill="none"
-        stroke="#c9a640"
-        strokeWidth="1.2"
-      />
       {cards.map(([x, y, w], i) => (
         <g key={i}>
           <rect
@@ -81,14 +72,6 @@ function PetalsPreview() {
   return (
     <svg viewBox="0 0 100 80" className="h-full w-full">
       <rect width="100" height="80" style={{ fill: "var(--bg-top)" }} />
-      <rect
-        x="34"
-        y="6"
-        width="32"
-        height="4"
-        rx="2"
-        style={{ fill: "var(--gold-400)" }}
-      />
       {[0, 1, 2, 3, 4].map((i) => {
         const pts = [[cx, cy]];
         for (let k = 0; k <= 4; k++) {
