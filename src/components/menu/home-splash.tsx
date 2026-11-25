@@ -41,7 +41,7 @@ export function HomeSplash({
       >
         <div className="relative flex h-40 w-40 items-center justify-center">
           <div className="splash-ring-wrap absolute inset-0">
-            <div className="splash-ring h-full w-full rounded-full border-[1.5px] border-[#C9A640]" />
+            <div className="splash-ring h-full w-full rounded-full border-[1.5px] border-gold-400" />
           </div>
           <div className="splash-logo-wrap relative flex h-full w-full items-center justify-center">
             <div className="splash-logo flex h-[62%] w-[62%] items-center justify-center">
@@ -49,7 +49,7 @@ export function HomeSplash({
                 <div
                   className="h-full w-full"
                   style={{
-                    backgroundColor: "#C9A640",
+                    backgroundColor: "var(--gold-400)",
                     WebkitMaskImage: `url(${logoUrl})`,
                     maskImage: `url(${logoUrl})`,
                     WebkitMaskSize: "contain",
@@ -61,7 +61,7 @@ export function HomeSplash({
                   }}
                 />
               ) : (
-                <span className="text-center text-lg font-semibold leading-tight text-[#C9A640]">
+                <span className="text-center text-lg font-semibold leading-tight text-gold-400">
                   {name}
                 </span>
               )}
@@ -72,7 +72,7 @@ export function HomeSplash({
 
       <div className="relative z-10 mx-auto flex w-full max-w-md flex-col items-center px-5 pb-28 pt-12 md:max-w-2xl lg:max-w-[1400px]">
         <h1
-          className="reveal text-center text-[34px] font-bold text-[#C9A640] lg:text-[44px]"
+          className="reveal text-center text-[34px] font-bold text-gold-400 lg:text-[44px]"
           style={{ ["--delay" as string]: "2.2s" }}
         >
           کافه خودمون
@@ -105,10 +105,9 @@ export function HomeSplash({
 
       <p
         dir="ltr"
-        className="reveal absolute bottom-[3.9rem] right-5 z-10 text-[13px] text-[#C9A640]/50"
-        style={{ ["--delay" as string]: "3.3s" }}
+        className="reveal absolute bottom-[3.9rem] right-5 z-10 text-[13px] text-gold-400/50"        style={{ ["--delay" as string]: "3.3s" }}
       >
-        Powered By <span className="text-[#C9A640]">Khoodemon</span>
+        Powered By <span className="text-gold-400">Khoodemon</span>
       </p>
 
       <footer
@@ -117,7 +116,7 @@ export function HomeSplash({
       >
         <Link
           href="/login"
-          className="text-[13px] text-[#C9A640]/60 hover:text-[#C9A640] hover:underline"
+          className="text-[13px] text-gold-400/60 hover:text-gold-400 hover:underline"
         >
           ورود مدیریت
         </Link>
