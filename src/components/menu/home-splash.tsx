@@ -96,7 +96,7 @@ export function HomeSplash({
       </div>
 
       {hasContact && (
-        <div className="reveal" style={{ ["--delay" as string]: "3.3s" }}>
+        <div className="reveal-fade" style={{ ["--delay" as string]: "3.3s" }}>
           <ContactButton name={name} phone={phone} address={address} />
         </div>
       )}
