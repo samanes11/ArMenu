@@ -3,9 +3,10 @@ import { HomeClassic } from "@/components/menu/home-classic";
 import { HomeSplash } from "@/components/menu/home-splash";
 import { Button } from "@/components/ui/button";
 import { getRestaurant } from "@/lib/get-restaurant";
+import { HomePetals } from "@/components/menu/home-petals";
 
 export default async function Home() {
-const restaurant = await getRestaurant();
+  const restaurant = await getRestaurant();
   if (!restaurant) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center">
@@ -26,6 +27,18 @@ const restaurant = await getRestaurant();
   const logoUrl = restaurant.logoUrl || undefined;
   const phone = restaurant.phone || "";
   const address = restaurant.address || "";
+
+  if (restaurant.homeTemplate === "petals") {
+    return (
+      <HomePetals
+        name={restaurant.name}
+        logoUrl={logoUrl}
+        phone={phone}
+        address={address}
+        hasContact={hasContact}
+      />
+    );
+  }
 
   if (restaurant.homeTemplate === "splash") {
     return (

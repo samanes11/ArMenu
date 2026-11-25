@@ -130,7 +130,7 @@ export async function applyThemePresetAction(preset: string) {
 export async function updateHomeTemplateAction(template: string) {
   const session = await getSession();
   if (!session?.restaurantId) redirect("/login");
-  if (template !== "classic" && template !== "splash") return;
+  if (template !== "classic" && template !== "splash" && template !== "petals") return;
   await connectDB();
   await Restaurant.findByIdAndUpdate(session.restaurantId, {
     homeTemplate: template,

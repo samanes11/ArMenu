@@ -34,7 +34,11 @@ export default async function SettingsPage() {
         theme={theme}
       />
       <HomeTemplatePicker
-        active={r.homeTemplate === "splash" ? "splash" : "classic"}
+        active={
+          r.homeTemplate === "splash" || r.homeTemplate === "petals"
+            ? r.homeTemplate
+            : "classic"
+        }
       />
     </div>
   );

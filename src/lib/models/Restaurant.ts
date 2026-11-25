@@ -22,7 +22,7 @@ const restaurantSchema = new Schema(
     },
     homeTemplate: {
       type: String,
-      enum: ["classic", "splash"],
+      enum: ["classic", "splash", "petals"],
       default: "classic",
     },
     accentColor: { type: String, default: "#e2bc3e" },
